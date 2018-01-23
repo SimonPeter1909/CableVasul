@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "752301771250",
+    "firebase_url": "https://cablevasul.firebaseio.com",
+    "project_id": "cablevasul",
+    "storage_bucket": "cablevasul.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:752301771250:android:82e06b5efb858126",
+        "android_client_info": {
+          "package_name": "trickandroid.cablevasul"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "752301771250-pg77fvabfc7dfm4j4jhb5fnqdu3lr4hj.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "trickandroid.cablevasul",
+            "certificate_hash": "7f32fd01e1c98be80adc58f1e8d702c4a33f2510"
+          }
+        },
+        {
+          "client_id": "752301771250-fek5n805ler7sb332qo459mkiagd1067.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDLzVlawZaLHi8UGx-k8vIgy8vss6DGehg"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "752301771250-fek5n805ler7sb332qo459mkiagd1067.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

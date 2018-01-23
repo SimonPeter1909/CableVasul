@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merge xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardUseCompatPadding="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/fab"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginRight="16dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="4dp"
+                android:text="@string/add_area"
+                app:srcCompat="@android:drawable/ic_input_add" />
+
+            <TextView
+                android:id="@+id/totalConnection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Total Connections"
+                android:textColor="@color/Black"
+                android:textSize="12sp"
+                android:layout_marginLeft="8dp"/>
+
+            <TextView
+                android:id="@+id/totalConecTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/totalConnection"
+                android:textColor="@color/Green"
+                android:textSize="12sp"
+                tools:text="0"
+                android:layout_marginLeft="8dp"/>
+
+            <TextView
+                android:id="@+id/pendingConnections"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/totalConecTV"
+                android:textColor="@color/Black"
+                android:textSize="12sp"
+                android:text="Pending Connections"
+                android:layout_marginLeft="8dp"/>
+
+            <TextView
+                android:id="@+id/pendingConnecTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/pendingConnections"
+                android:textColor="@color/Red"
+                android:textSize="12sp"
+                tools:text="0"
+                android:layout_marginLeft="8dp"/>
+
+            <TextView
+                android:id="@+id/amountCollected"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Amount Collected"
+                android:layout_below="@id/pendingConnections"
+                android:layout_toRightOf="@+id/totalAmountTV"
+                android:textColor="@color/Black"
+                android:textSize="12sp"
+                android:layout_marginLeft="8dp"/>
+
+            <TextView
+                android:id="@+id/totalAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/totalConnection"
+                android:text="Total Amount"
+                android:textColor="@color/Black"
+                android:textSize="12sp"
+                android:layout_marginLeft="8dp"/>
+
+            <TextView
+                android:id="@+id/amountCollectedTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_toRightOf="@+id/amountCollected"
+                android:textColor="@color/Red"
+                android:layout_below="@id/pendingConnections"
+                android:textSize="12sp"
+                tools:text="0"
+                android:layout_marginLeft="8dp"/>
+
+            <TextView
+                android:id="@+id/totalAmountTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/totalConecTV"
+                android:layout_toRightOf="@+id/totalAmount"
+                android:textColor="@color/Green"
+                android:textSize="12sp"
+                tools:text="0"
+                android:layout_marginLeft="8dp"/>
+
+
+        </RelativeLayout>
+
+    </android.support.v7.widget.CardView>
+
+</merge>

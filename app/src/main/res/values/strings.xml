@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Cable Vasul</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_area">AreaActivity</string>
+    <string name="title_activity_customer_list">CustomerListActivity</string>
+    <string name="add_area">Add Area</string>
+</resources>
