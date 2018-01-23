@@ -1,6 +1,7 @@
 package trickandroid.cablevasul.ActivityCustomerList;
 
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -12,6 +13,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -21,7 +23,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import java.util.Calendar;
+import java.util.Date;
 
 import trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments.FragmentConnectionList;
 import trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments.FragmentPaidList;
@@ -34,8 +36,10 @@ import trickandroid.cablevasul.Utils.DateSetter;
 import trickandroid.cablevasul.Utils.SectionPagerAdapter;
 import trickandroid.cablevasul.Utils.ShowSnackBar;
 
-public class CustomerListActivity extends AppCompatActivity {
+public class CustomerListActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
     private static final String TAG = "CustomerListActivity";
+
+    private TextView newConnectionDateTV, newConnectionAreaTV;
 
     //firebase
     private InitializeFirebaseAuth auth = new InitializeFirebaseAuth();
@@ -71,7 +75,7 @@ public class CustomerListActivity extends AppCompatActivity {
     public void setToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle(getAreaName());
-        toolbar.setSubtitle(dateSetter.dateFormat());
+        toolbar.setSubtitle(dateSetter.ddmmyyyyday());
         setSupportActionBar(toolbar);
     }
 
@@ -135,10 +139,10 @@ public class CustomerListActivity extends AppCompatActivity {
      * @param maindialog
      */
     public void onClickAdd(final View newView, final MaterialDialog maindialog){
-        final TextView newConnectionDateTV = newView.findViewById(R.id.newConnectionDateTV);
-        TextView newConnectionAreaTV = newView.findViewById(R.id.newConnectionAreaTV);
+        newConnectionDateTV = newView.findViewById(R.id.newConnectionDateTV);
+        newConnectionAreaTV = newView.findViewById(R.id.newConnectionAreaTV);
         newConnectionAreaTV.setText(getAreaName());
-        newConnectionDateTV.setText(dateSetter.dateFormat());
+        newConnectionDateTV.setText(dateSetter.ddmmyyyy());
         Button addBtn = newView.findViewById(R.id.addBTN);
         Button cancelBtn = newView.findViewById(R.id.cancelBtn);
         final CheckBox paidCB = newView.findViewById(R.id.paidCheckBox);
@@ -146,7 +150,7 @@ public class CustomerListActivity extends AppCompatActivity {
         newConnectionDateTV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showDatePicker(newConnectionDateTV);
+                showDatePicker(newView);
             }
         });
 
@@ -193,8 +197,20 @@ public class CustomerListActivity extends AppCompatActivity {
         });
     }
 
-    public void showDatePicker(TextView setDateTV){
-
+    /**
+     * displays datePicker onClick connectionDateTextView
+     * @param view
+     */
+    public void showDatePicker(View view){
+        DatePickerDialog datePickerDialog = new DatePickerDialog(
+                view.getContext(),
+                CustomerListActivity.this,
+                dateSetter.intyear,
+                dateSetter.intmonth,
+                dateSetter.intdate
+        );
+        datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
+        datePickerDialog.show();
     }
 
     /**
@@ -209,11 +225,11 @@ public class CustomerListActivity extends AppCompatActivity {
 
         if (paidCB.isChecked()){
             paid = "Paid";
-            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(dateSetter.dateFormat(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid);
+            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(dateSetter.ddmmyyyyday(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid);
             nodes.getNodeConnectionList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodePaidList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
         } else {
-            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(dateSetter.dateFormat(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid);
+            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(dateSetter.ddmmyyyyday(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid);
             nodes.getNodeConnectionList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodePendingList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
         }
@@ -316,6 +332,10 @@ public class CustomerListActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * edits the values displays in the areaList RecyclerView
+     * @param paidCB
+     */
     public void editValuePerArea(final CheckBox paidCB){
         nodes.getNodeAreaDetails().child(getAreaName()).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -438,5 +458,11 @@ public class CustomerListActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
         auth.removeAuthListner();
+    }
+
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        String dateFormat = String.format("%02d/%02d/%04d",dayOfMonth,month+1,year);
+        newConnectionDateTV.setText(dateFormat);
     }
 }

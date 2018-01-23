@@ -13,9 +13,9 @@ public class DateSetter {
     private static final String TAG = "DateSetter";
 
     private Calendar calendar = Calendar.getInstance();
-    private int intdate = calendar.get(Calendar.DATE);
-    private int intmonth = calendar.get(Calendar.MONTH);
-    private int intyear = calendar.get(Calendar.YEAR);
+    public int intdate = calendar.get(Calendar.DATE);
+    public int intmonth = calendar.get(Calendar.MONTH);
+    public int intyear = calendar.get(Calendar.YEAR);
     private int intday = calendar.get(Calendar.DAY_OF_WEEK);
 
     public String date(){
@@ -97,8 +97,12 @@ public class DateSetter {
         return day()+",  "+wordMonth()+" "+date()+",  "+year();
     }
 
-    public String dateFormat(){
+    public String ddmmyyyyday(){
         return date()+"/"+numberMonth()+"/"+year()+", "+day();
+    }
+
+    public String ddmmyyyy(){
+        return date()+"/"+numberMonth()+"/"+year();
     }
 
     public String year(){

@@ -107,7 +107,7 @@ public class AreaActivity extends AppCompatActivity {
      */
     public void setToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar);
-        toolbar.setSubtitle(dateSetter.dateFormat());
+        toolbar.setSubtitle(dateSetter.ddmmyyyyday());
         setSupportActionBar(toolbar);
     }
 
