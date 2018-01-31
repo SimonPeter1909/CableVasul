@@ -1,13 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:tools="http://schemas.android.com/tools">
+    app:cardUseCompatPadding="true">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:weightSum="10">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -15,74 +18,93 @@
             android:orientation="horizontal">
 
             <TextView
+                android:id="@+id/connectionNumberTV"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                tools:text="A-1"
                 android:layout_gravity="center"
+                android:layout_margin="5dp"
+                android:layout_weight="2"
                 android:gravity="center"
                 android:maxLines="1"
                 android:textSize="20sp"
-                android:layout_margin="5dp"
-                android:id="@+id/connectionNumberTV"/>
+                tools:text="A-1" />
 
+
+            <LinearLayout
+                android:layout_gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/nameTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="start"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textAlignment="viewStart"
+                    android:textSize="24sp"
+                    tools:text="Simon" />
+
+
+                <TextView
+                    android:id="@+id/connectionDateTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="left"
+                    android:layout_margin="5dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textAlignment="viewStart"
+                    android:textSize="12sp"
+                    tools:text="21/11/18" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="2"
+                android:orientation="vertical"
+                android:layout_gravity="center">
 
             <TextView
-                android:maxLines="1"
+                android:id="@+id/amountTV"
                 android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                tools:text="Simon"
+                android:layout_height="match_parent"
                 android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="18sp"
                 android:layout_margin="5dp"
-                android:id="@+id/nameTV"/>
-
-
-            <TextView
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                tools:text="210"
-                android:layout_gravity="center"
                 android:gravity="center"
+                android:maxLines="1"
                 android:textSize="20sp"
-                android:layout_margin="5dp"
-                android:id="@+id/amountTV"/>
+                tools:text="210" />
 
-            <TextView
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                tools:text="21/11/18"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="18sp"
-                android:layout_margin="5dp"
-                android:id="@+id/connectionDateTV"/>
 
-            <TextView
-                android:maxLines="1"
-                android:layout_width="match_parent"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                tools:text="Paid"
-                android:layout_gravity="center"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:layout_margin="5dp"
-                android:id="@+id/paidTV"/>
+                <TextView
+                    android:id="@+id/paidTV"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center"
+                    android:layout_margin="5dp"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textSize="12sp"
+                    tools:text="Paid" />
+
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="match_parent"
-                android:layout_weight="1"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_phone"
                 android:layout_gravity="center"
-                android:layout_margin="5dp"/>
+                android:layout_margin="5dp"
+                android:layout_weight="2"
+                android:src="@drawable/ic_phone" />
 
         </LinearLayout>
 

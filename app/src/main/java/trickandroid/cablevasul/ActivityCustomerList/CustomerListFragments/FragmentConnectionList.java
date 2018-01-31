@@ -70,6 +70,11 @@ public class FragmentConnectionList extends Fragment {
                 holder.amountTV.setText(model.getMonthlyAmount());
                 holder.connectionDateTV.setText(model.getDate());
                 holder.paidTV.setText(model.getPaid());
+                if (holder.paidTV.getText().equals("Paid")){
+                    holder.paidTV.setTextColor(getResources().getColor(R.color.Green));
+                } else {
+                    holder.paidTV.setTextColor(getResources().getColor(R.color.Red));
+                }
             }
 
             @Override

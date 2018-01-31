@@ -43,11 +43,9 @@ public class FragmentPendingList extends Fragment {
         View mainView = inflater.inflate(R.layout.fragment_pending_list,container,false);
 
         initializeWidgets(mainView);
-
         setAdapter(mainView);
 
         return mainView;
-
     }
 
     public String getAreaName(){
@@ -69,6 +67,11 @@ public class FragmentPendingList extends Fragment {
                 holder.amountTV.setText(model.getMonthlyAmount());
                 holder.connectionDateTV.setText(model.getDate());
                 holder.paidTV.setText(model.getPaid());
+                if (holder.paidTV.getText().equals("Paid")){
+                    holder.paidTV.setTextColor(getResources().getColor(R.color.Green));
+                } else {
+                    holder.paidTV.setTextColor(getResources().getColor(R.color.Red));
+                }
             }
 
             @Override
