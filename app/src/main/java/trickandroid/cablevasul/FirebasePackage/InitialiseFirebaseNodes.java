@@ -63,6 +63,10 @@ public class InitialiseFirebaseNodes {
         return mainNode.getReference().child(getUserID.getUserId()).child("ConnectionNumberCheck");
     }
 
+    public DatabaseReference getNodeConnectionListPerMonth(){
+        return mainNode.getReference().child(getUserID.getUserId()).child("ConnectionListPerMonth");
+    }
+
     public DatabaseReference getNodeConnectionList(){
         return mainNode.getReference().child(getUserID.getUserId()).child("ConnectionList");
     }

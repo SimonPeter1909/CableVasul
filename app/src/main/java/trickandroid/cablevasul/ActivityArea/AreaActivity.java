@@ -12,6 +12,8 @@ import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -20,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import cn.pedant.SweetAlert.SweetAlertDialog;
 import trickandroid.cablevasul.ActivityArea.AreaFragments.FragmentAreaList;
 import trickandroid.cablevasul.ActivityArea.AreaFragments.FragmentMonthList;
 import trickandroid.cablevasul.ActivityArea.Details.AreaDetails;
@@ -43,16 +46,21 @@ public class AreaActivity extends AppCompatActivity {
 
     //widgets
     private Toolbar toolbar;
+    private RelativeLayout progressLayout;
     private Button fab;
     private TextView totalConnectionsTV, pendingTV, totalAmountTV, amountCollectedTV;
 
 
+    //firebase
     private InitialiseFirebaseNodes nodes = new InitialiseFirebaseNodes();
     private InitializeFirebaseAuth auth = new InitializeFirebaseAuth();
 
     //utils
     private ShowSnackBar snackBar = new ShowSnackBar();
     private DateSetter dateSetter = new DateSetter();
+
+    //progressBar
+    private MaterialDialog progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +69,7 @@ public class AreaActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         auth.initializeFBAuth();
         initializeWidgets();
+        setProgressBar();
         setToolbar();
         setupViewPager();
         setVasulList();
@@ -68,6 +77,21 @@ public class AreaActivity extends AppCompatActivity {
         setTotalAmount();
         setTotalConnections();
         fabClick();
+    }
+
+    /**
+     * displays progressDialog till the Firebase values are Loaded
+     */
+    public void setProgressBar(){
+        MaterialDialog.Builder progressBuilder = new MaterialDialog.Builder(this)
+                .title("Loading")
+                .content("Please Wait...")
+                .progress(true,0)
+                .progressIndeterminateStyle(true);
+
+        progressBar = progressBuilder.build();
+        progressBar.setCancelable(false);
+        progressBar.show();
     }
 
     /**
@@ -139,7 +163,6 @@ public class AreaActivity extends AppCompatActivity {
         tabLayout.getTabAt(1).setText("Month List");
     }
 
-
     /**
      * 1.opens MaterialDialog to add area
      * 2.checks for existing area, if area already exists displays SnackBar
@@ -189,7 +212,6 @@ public class AreaActivity extends AppCompatActivity {
         });
     }
 
-
     /**
      * Adds area and areaDetails to firebase database
      * @param area
@@ -208,6 +230,10 @@ public class AreaActivity extends AppCompatActivity {
         Log.d(TAG, "onDataChange: area " + area + " Added");
     }
 
+    /**
+     * add month details to the Firebase Database
+     * Adds new Month Node on every First day of the Month
+     */
     public void addMonth(){
         nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).addValueEventListener(new ValueEventListener() {
             @Override
@@ -257,6 +283,7 @@ public class AreaActivity extends AppCompatActivity {
                     int totalAmount = dataSnapshot.child("TotalAmount").getValue(Integer.class);
                     Log.d(TAG, "onDataChange: Total Amount = " + String.valueOf(totalAmount));
                     totalAmountTV.setText(String.valueOf(totalAmount));
+                    progressBar.dismiss();
                 }
             }
 
@@ -339,8 +366,6 @@ public class AreaActivity extends AppCompatActivity {
     @Override
     public void onStart() {
         super.onStart();
-//        areaAdapter.startListening();
-//        monthAdapter.startListening();
         auth.addAuthListener();
     }
 

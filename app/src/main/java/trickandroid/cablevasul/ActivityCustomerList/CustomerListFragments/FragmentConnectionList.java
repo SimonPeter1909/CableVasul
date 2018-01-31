@@ -10,12 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
 
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
-import trickandroid.cablevasul.ActivityCustomerList.CustomerListActivity;
 import trickandroid.cablevasul.ActivityCustomerList.Details.NewConnectionDetails;
 import trickandroid.cablevasul.ActivityCustomerList.ViewHolder.ConnectionListViewHolder;
 import trickandroid.cablevasul.FirebasePackage.InitialiseFirebaseNodes;
@@ -51,15 +49,23 @@ public class FragmentConnectionList extends Fragment {
         return mainView;
     }
 
+    /**
+     * gets AreaName from the fragment bundle and returns as a String
+     * @return
+     */
     public String getAreaName(){
         Bundle bundle = getArguments();
         Log.d(TAG, "getAreaName: = " + bundle.getString("areaName"));
         return bundle.getString("areaName");
     }
 
+    /**
+     * sets the value obtained from the firebase database and displays in the card View
+     * @param view
+     */
     public void setAdapter(View view){
         FirebaseRecyclerOptions<NewConnectionDetails> options = new FirebaseRecyclerOptions.Builder<NewConnectionDetails>()
-                .setQuery(nodes.getNodeConnectionList().child(getAreaName()).child(dateSetter.monthAndYear()),NewConnectionDetails.class)
+                .setQuery(nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()),NewConnectionDetails.class)
                 .build();
 
         adapter = new FirebaseRecyclerAdapter<NewConnectionDetails, ConnectionListViewHolder>(options) {
@@ -70,11 +76,8 @@ public class FragmentConnectionList extends Fragment {
                 holder.amountTV.setText(model.getMonthlyAmount());
                 holder.connectionDateTV.setText(model.getDate());
                 holder.paidTV.setText(model.getPaid());
-                if (holder.paidTV.getText().equals("Paid")){
-                    holder.paidTV.setTextColor(getResources().getColor(R.color.Green));
-                } else {
-                    holder.paidTV.setTextColor(getResources().getColor(R.color.Red));
-                }
+                setTextColorofPaidTV(holder);
+
             }
 
             @Override
@@ -90,6 +93,32 @@ public class FragmentConnectionList extends Fragment {
         connectionListRV.setAdapter(adapter);
     }
 
+    public void onClickCallImg(final ConnectionListViewHolder holder){
+        holder.callImg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String connectionNumber = holder.connectionNumberTV.getText().toString();
+
+            }
+        });
+    }
+
+    /**
+     * sets the TextColor of the PaidTV
+     * @param holder
+     */
+    public void setTextColorofPaidTV(ConnectionListViewHolder holder){
+        if (holder.paidTV.getText().equals("Paid")){
+            holder.paidTV.setTextColor(getResources().getColor(R.color.Green));
+        } else {
+            holder.paidTV.setTextColor(getResources().getColor(R.color.Red));
+        }
+    }
+
+    /**
+     * initializing widgets of the Fragment
+     * @param view
+     */
     public void initializeWidgets(View view){
         connectionListRV = view.findViewById(R.id.connectionListRV);
     }

@@ -2,6 +2,7 @@ package trickandroid.cablevasul.ActivityCustomerList.ViewHolder;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import trickandroid.cablevasul.R;
@@ -13,6 +14,7 @@ import trickandroid.cablevasul.R;
 public class ConnectionListViewHolder extends RecyclerView.ViewHolder {
 
     public TextView connectionNumberTV, nameTV, amountTV, connectionDateTV, paidTV;
+    public ImageView callImg;
 
     public ConnectionListViewHolder(View itemView) {
         super(itemView);
@@ -21,5 +23,6 @@ public class ConnectionListViewHolder extends RecyclerView.ViewHolder {
         amountTV = itemView.findViewById(R.id.amountTV);
         connectionDateTV = itemView.findViewById(R.id.connectionDateTV);
         paidTV = itemView.findViewById(R.id.paidTV);
+        callImg = itemView.findViewById(R.id.callImg);
     }
 }

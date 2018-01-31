@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="trickandroid.cablevasul">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-sdk android:minSdkVersion="19" android:targetSdkVersion="27"/>
 
     <application
         android:allowBackup="true"
@@ -10,7 +12,8 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        tools:replace="android:icon">
         <activity android:name=".ActivityLogin.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

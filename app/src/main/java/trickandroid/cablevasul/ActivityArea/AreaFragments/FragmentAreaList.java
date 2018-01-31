@@ -10,9 +10,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import trickandroid.cablevasul.ActivityArea.Details.AreaDetails;
 import trickandroid.cablevasul.ActivityArea.ViewHolder.AreaViewHolder;
@@ -46,6 +51,7 @@ public class FragmentAreaList extends Fragment {
         return mainView;
     }
 
+
     /**
      * Adapter to display areaList
      * onClick actions for list Items
@@ -54,6 +60,8 @@ public class FragmentAreaList extends Fragment {
         FirebaseRecyclerOptions<AreaDetails> areaDetail = new FirebaseRecyclerOptions.Builder<AreaDetails>()
                 .setQuery(nodes.getNodeAreaDetails(), AreaDetails.class)
                 .build();
+
+
 
         areaAdapter = new FirebaseRecyclerAdapter<AreaDetails, AreaViewHolder>(areaDetail) {
             @Override
@@ -72,9 +80,14 @@ public class FragmentAreaList extends Fragment {
             }
 
             @Override
+            public void onDataChanged() {
+                super.onDataChanged();
+
+            }
+
+            @Override
             public AreaViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
                 View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_area_list, parent, false);
-
                 return new AreaViewHolder(view);
             }
         };

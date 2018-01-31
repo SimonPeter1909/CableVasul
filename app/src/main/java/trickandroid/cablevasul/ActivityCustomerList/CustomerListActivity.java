@@ -19,8 +19,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Date;
@@ -44,20 +47,40 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
     //firebase
     private InitializeFirebaseAuth auth = new InitializeFirebaseAuth();
     private InitialiseFirebaseNodes nodes = new InitialiseFirebaseNodes();
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     //utils
     private ShowSnackBar snackBar = new ShowSnackBar();
     private DateSetter dateSetter = new DateSetter();
+
+    //ProgressBar
+    private MaterialDialog progressBar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_customer_list);
         setToolbar();
+        setProgressBar();
         auth.initializeFBAuth();
         setupViewPager();
         fabClick();
 
+    }
+
+    /**
+     * displays progressDialog till the Firebase values are Loaded
+     */
+    public void setProgressBar(){
+        MaterialDialog.Builder progressBuilder = new MaterialDialog.Builder(this)
+                .title("Loading")
+                .content("Please Wait...")
+                .progress(true,0)
+                .progressIndeterminateStyle(true);
+
+        progressBar = progressBuilder.build();
+        progressBar.setCancelable(false);
+        progressBar.show();
     }
 
     /**
@@ -122,7 +145,6 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
                 MaterialDialog mainDialog = new MaterialDialog.Builder(CustomerListActivity.this)
                         .title("Add new Connection")
                         .customView(R.layout.dialog_add_new_connection, true)
-
                         .build();
 
                 final View newView = mainDialog.getView();
@@ -226,12 +248,15 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         if (paidCB.isChecked()){
             paid = "Paid";
             NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid);
-            nodes.getNodeConnectionList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
+            NewConnectionDetails newConnectionDetailsUnpaid = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),"Unpaid");
+            nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodePaidList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
+            nodes.getNodeConnectionList().child(getAreaName()).child(connectionNumberString(newView)).setValue(newConnectionDetailsUnpaid);
         } else {
             NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid);
-            nodes.getNodeConnectionList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
+            nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodePendingList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
+            nodes.getNodeConnectionList().child(getAreaName()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
         }
 
         setTotalAmount(newView, paidCB);
@@ -448,10 +473,73 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         return editText.getText().toString();
     }
 
+    /**
+     * This method copies value from the connectionList node and creates the new Node On First day of the month
+     * @param fromPath
+     * @param toPath
+     */
+    public void copyConnectionList(DatabaseReference fromPath, final DatabaseReference toPath){
+        final Bundle bundle = new Bundle();
+        fromPath.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                progressBar.dismiss();
+                toPath.setValue(dataSnapshot.getValue(), new DatabaseReference.CompletionListener() {
+                    @Override
+                    public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {
+                        if (databaseError != null){
+                            bundle.putString("CopyNode","Error While Copying");
+                            mFirebaseAnalytics.logEvent("Copying",bundle);
+                            Log.d(TAG, "onComplete: Error while Copying");
+                        } else {
+                            bundle.putString("CopyNode","Copy Successful");
+                            mFirebaseAnalytics.logEvent("Copying",bundle);
+                            Log.d(TAG, "onComplete: Copy Successful");
+                        }
+                    }
+                });
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         auth.addAuthListener();
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+
+        nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()){
+                    copyConnectionList(nodes.getNodeConnectionList().child(getAreaName()),nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        nodes.getNodePendingList().child(getAreaName()).child(dateSetter.monthAndYear()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()){
+                    copyConnectionList(nodes.getNodeConnectionList().child(getAreaName()),nodes.getNodePendingList().child(getAreaName()).child(dateSetter.monthAndYear()));
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

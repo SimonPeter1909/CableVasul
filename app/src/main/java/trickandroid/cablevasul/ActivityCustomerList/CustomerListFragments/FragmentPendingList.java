@@ -48,12 +48,20 @@ public class FragmentPendingList extends Fragment {
         return mainView;
     }
 
+    /**
+     * gets AreaName from the fragment bundle and returns as a String
+     * @return
+     */
     public String getAreaName(){
         Bundle bundle = getArguments();
         Log.d(TAG, "getAreaName: = " + bundle.getString("areaName"));
         return bundle.getString("areaName");
     }
 
+    /**
+     * sets the value obtained from the firebase database and displays in the card View
+     * @param view
+     */
     public void setAdapter(View view){
         FirebaseRecyclerOptions<NewConnectionDetails> options = new FirebaseRecyclerOptions.Builder<NewConnectionDetails>()
                 .setQuery(nodes.getNodePendingList().child(getAreaName()).child(dateSetter.monthAndYear()),NewConnectionDetails.class)
@@ -67,11 +75,7 @@ public class FragmentPendingList extends Fragment {
                 holder.amountTV.setText(model.getMonthlyAmount());
                 holder.connectionDateTV.setText(model.getDate());
                 holder.paidTV.setText(model.getPaid());
-                if (holder.paidTV.getText().equals("Paid")){
-                    holder.paidTV.setTextColor(getResources().getColor(R.color.Green));
-                } else {
-                    holder.paidTV.setTextColor(getResources().getColor(R.color.Red));
-                }
+                setTextColorofPaidTV(holder);
             }
 
             @Override
@@ -87,6 +91,22 @@ public class FragmentPendingList extends Fragment {
         pendingListRV.setAdapter(adapter);
     }
 
+    /**
+     * sets the TextColor of the PaidTV
+     * @param holder
+     */
+    public void setTextColorofPaidTV(ConnectionListViewHolder holder){
+        if (holder.paidTV.getText().equals("Paid")){
+            holder.paidTV.setTextColor(getResources().getColor(R.color.Green));
+        } else {
+            holder.paidTV.setTextColor(getResources().getColor(R.color.Red));
+        }
+    }
+
+    /**
+     * initializing widgets of the Fragment
+     * @param view
+     */
     public void initializeWidgets(View view){
         pendingListRV = view.findViewById(R.id.pendingListRV);
     }
