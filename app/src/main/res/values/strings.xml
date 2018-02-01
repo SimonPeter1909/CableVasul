@@ -4,4 +4,9 @@
     <string name="title_activity_area">AreaActivity</string>
     <string name="title_activity_customer_list">CustomerListActivity</string>
     <string name="add_area">Add Area</string>
+    <string name="add">Add</string>
+    <string name="edit">Edit</string>
+    <string name="disconnect">Disconnect</string>
+    <string name="shift">Shift</string>
+    <string name="setting">Setting</string>
 </resources>

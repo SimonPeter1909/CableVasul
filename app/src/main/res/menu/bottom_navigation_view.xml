@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/ic_add"
+        android:icon="@drawable/ic_add"
+        android:title="@string/add"/>
+
+    <item
+        android:id="@+id/ic_edit"
+        android:icon="@drawable/ic_edit"
+        android:title="@string/edit"/>
+
+    <item
+        android:id="@+id/ic_disconnect"
+        android:icon="@drawable/ic_disconnect"
+        android:title="@string/disconnect"/>
+
+    <item
+        android:id="@+id/ic_shift"
+        android:icon="@drawable/ic_shift"
+        android:title="@string/shift"/>
+
+    <item
+        android:id="@+id/ic_setting"
+        android:icon="@drawable/ic_setting"
+        android:title="@string/setting"/>
+
+</menu>

@@ -1,9 +1,12 @@
 package trickandroid.cablevasul.ActivityLogin;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
@@ -14,9 +17,11 @@ import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -24,6 +29,7 @@ import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
+
 
 import mehdi.sakout.fancybuttons.FancyButton;
 import trickandroid.cablevasul.ActivityArea.AreaActivity;
@@ -55,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-
+        checkInternetConnection();
         initializeWidgets();
         auth.initializeFBAuth();
         createSQL();
@@ -63,8 +69,43 @@ public class LoginActivity extends AppCompatActivity {
         setDate();
     }
 
+    /**
+     * checks for internet connection and if the connection fails displays the dialog to check for internet connection
+     */
+    public void checkInternetConnection() {
+        if (!isNetworkAvailable()) {
+                SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
+                dialog.setTitleText("No Internet Connection!!!");
+                dialog.setContentText("Check your Internet Connection");
+                dialog.setConfirmText("Exit Application");
+                dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        finish();
+                    }
+                });
+                dialog.setCancelable(false);
+                dialog.show();
+        }
+    }
+
+    /**
+     * checks for internet connection and returns the boolean value
+     * @return
+     */
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
+    /**
+     * Login Users with email and password
+     *
+     * @param view
+     */
     public void loginClick(View view) {
-        String email = emailET.getText().toString();
+        String email = emailET.getText().toString() + "@simon.com";
         String password = passwordET.getText().toString();
 
         if (email.isEmpty()) {
@@ -75,11 +116,14 @@ public class LoginActivity extends AppCompatActivity {
             if (checkDate()) {
                 loginUser(email, password, view);
             } else {
-                snackBar.snackBar(view,"Set Correct Date in your Mobile");
+                snackBar.snackBar(view, "Set Correct Date in your Mobile");
             }
         }
     }
 
+    /**
+     * initialize widgets
+     */
     public void initializeWidgets() {
         emailET = (EditText) findViewById(R.id.emailET);
         passwordET = (EditText) findViewById(R.id.passwordET);
@@ -90,18 +134,25 @@ public class LoginActivity extends AppCompatActivity {
         progressBar = findViewById(R.id.progressBar);
     }
 
+    /**
+     * creates or opens database and Table to store email and password
+     */
     public void createSQL() {
         rememberMe = openOrCreateDatabase("RememberMe", MODE_PRIVATE, null);
         rememberMe.execSQL("CREATE TABLE IF NOT EXISTS RememberMeTable(email TEXT NOT NULL, password TEXT NOT NULL)");
     }
 
+    /**
+     * Stores the value of email and password in sql database if the remember me checkBox is checked
+     */
     public void rememberMe() {
         if (checkBox.isChecked()) {
-            String email = emailET.getText().toString();
+            String emailWithAt = emailET.getText().toString();
+            String[] email = emailWithAt.split("@");
             String password = passwordET.getText().toString();
 
             ContentValues fields = new ContentValues();
-            fields.put("email", email);
+            fields.put("email", email[0]);
             fields.put("password", password);
 
             rememberMe.insert("RememberMeTable", null, fields);
@@ -110,6 +161,10 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
+    /**
+     * When the app starts if the database is loaded with email and password, fills the email and password editText
+     * with the values stored in the database
+     */
     public void fillFields() {
         Cursor cursor = rememberMe.rawQuery("SELECT * FROM RememberMeTable", null);
         if (cursor != null) {
@@ -127,12 +182,20 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    public boolean checkDate(){
+    /**
+     * gets the value form the dateTextView which is parsed from the time.us and checks it with dateSetter method
+     *
+     * @return
+     */
+    public boolean checkDate() {
         String date = dateTV.getText().toString();
         Log.d(TAG, "checkDate: = " + date);
         return date.equals(dateSetter.finalDate());
     }
 
+    /**
+     * parse the value of date from time.us
+     */
     public void setDate() {
         new Thread(new Runnable() {
 
@@ -171,6 +234,13 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    /**
+     * firebase method to login User
+     *
+     * @param email
+     * @param password
+     * @param view
+     */
     public void loginUser(String email, String password, final View view) {
         auth.mAuth().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {

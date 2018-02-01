@@ -22,7 +22,7 @@
     </android.support.design.widget.AppBarLayout>
 
     <android.support.design.widget.AppBarLayout
-        android:layout_below="@+id/appBarLayout"
+        android:layout_below="@+id/bottomBarRL"
         android:id="@+id/appBarLayoutTabs"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,22 +39,23 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/viewPagerLayout"
         android:layout_below="@+id/appBarLayoutTabs">
 
         <include layout="@layout/content_customer_list" />
 
     </RelativeLayout>
 
-
-
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/fab"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/bottomBarRL"
+        android:layout_width="match_parent"
+        android:background="@color/LightGreen"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_input_add" />
+        android:layout_below="@+id/appBarLayout">
+
+        <include layout="@layout/layout_bottom_navigation"/>
+
+    </RelativeLayout>
 
 </RelativeLayout>

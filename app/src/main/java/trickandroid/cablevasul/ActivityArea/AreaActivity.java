@@ -22,7 +22,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import cn.pedant.SweetAlert.SweetAlertDialog;
 import trickandroid.cablevasul.ActivityArea.AreaFragments.FragmentAreaList;
 import trickandroid.cablevasul.ActivityArea.AreaFragments.FragmentMonthList;
 import trickandroid.cablevasul.ActivityArea.Details.AreaDetails;

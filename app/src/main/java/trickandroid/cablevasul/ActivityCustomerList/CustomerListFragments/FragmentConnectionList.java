@@ -22,6 +22,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
+import trickandroid.cablevasul.ActivityCustomerList.CustomerListActivity;
 import trickandroid.cablevasul.ActivityCustomerList.Details.NewConnectionDetails;
 import trickandroid.cablevasul.ActivityCustomerList.ViewHolder.ConnectionListViewHolder;
 import trickandroid.cablevasul.FirebasePackage.InitialiseFirebaseNodes;
@@ -86,6 +87,7 @@ public class FragmentConnectionList extends Fragment {
                 holder.paidTV.setText(model.getPaid());
                 setTextColorofPaidTV(holder);
                 onClickCallImg(holder);
+                onHolderClick(holder);
             }
 
             @Override
@@ -99,6 +101,14 @@ public class FragmentConnectionList extends Fragment {
         connectionListRV.setHasFixedSize(true);
         connectionListRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
         connectionListRV.setAdapter(adapter);
+    }
+
+    public void onHolderClick(ConnectionListViewHolder holder){
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
     }
 
     /**
@@ -141,6 +151,7 @@ public class FragmentConnectionList extends Fragment {
                 .title("Call")
                 .content("Are you sure want to Call " + mobileNumber)
                 .iconRes(R.drawable.ic_phone)
+                .cancelable(false)
                 .positiveText("Call")
                 .positiveColor(getResources().getColor(R.color.Blue))
                 .negativeText("Cancel")

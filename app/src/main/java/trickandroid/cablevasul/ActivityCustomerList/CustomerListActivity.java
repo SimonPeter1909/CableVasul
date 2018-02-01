@@ -3,13 +3,17 @@ package trickandroid.cablevasul.ActivityCustomerList;
 
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -25,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 
 import java.util.Date;
 
@@ -62,10 +67,10 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         setContentView(R.layout.activity_customer_list);
         setToolbar();
         setProgressBar();
+        setupBottomNavigationView();
         auth.initializeFBAuth();
         setupViewPager();
         cancelProgressBar();
-        fabClick();
     }
 
     /**
@@ -111,6 +116,8 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (dataSnapshot.exists()){
                     progressBar.dismiss();
+                } else {
+                    progressBar.dismiss();
                 }
             }
 
@@ -119,6 +126,63 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
 
             }
         });
+    }
+
+    /**
+     * setting and customizing Bottom navigation View
+     */
+    public void setupBottomNavigationView(){
+        Log.d(TAG, "setupBottomNavigationView: starting");
+        BottomNavigationViewEx bottomNavigationViewEx = findViewById(R.id.bottomNavigationBar);
+        bottomNavigationViewEx.enableAnimation(true);
+        bottomNavigationViewEx.enableItemShiftingMode(false);
+        bottomNavigationViewEx.enableShiftingMode(false);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            bottomNavigationViewEx.setIconTintList(0,getColorStateList(R.color.Green));
+            bottomNavigationViewEx.setIconTintList(1,getColorStateList(R.color.Blue));
+            bottomNavigationViewEx.setIconTintList(2,getColorStateList(R.color.Red));
+            bottomNavigationViewEx.setIconTintList(3,getColorStateList(R.color.DarkOrange));
+            bottomNavigationViewEx.setIconTintList(4,getColorStateList(R.color.Black));
+            bottomNavigationViewEx.setTextTintList(0,getColorStateList(R.color.Green));
+            bottomNavigationViewEx.setTextTintList(1,getColorStateList(R.color.Blue));
+            bottomNavigationViewEx.setTextTintList(2,getColorStateList(R.color.Red));
+            bottomNavigationViewEx.setTextTintList(3,getColorStateList(R.color.DarkOrange));
+            bottomNavigationViewEx.setTextTintList(4,getColorStateList(R.color.Black));
+        }
+        onNavigationItemSelected(bottomNavigationViewEx);
+    }
+
+    /**
+     * displays corresponding Dialog Box when the Item is clicked
+     * @param bottomNavigationViewEx
+     */
+    public void onNavigationItemSelected(final BottomNavigationViewEx bottomNavigationViewEx){
+        bottomNavigationViewEx.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()){
+                    case R.id.ic_add:
+                        displayAddDialog();
+                        break;
+                }
+                return false;
+            }
+        });
+    }
+
+    /**
+     * onClick add item Displays Add new Connection Dialog
+     */
+    public void displayAddDialog(){
+        MaterialDialog mainDialog = new MaterialDialog.Builder(CustomerListActivity.this)
+                .title("Add new Connection")
+                .customView(R.layout.dialog_add_new_connection, true)
+                .build();
+
+        final View newView = mainDialog.getView();
+        onClickAdd(newView, mainDialog);
+
+        mainDialog.show();
     }
 
     /**
@@ -151,27 +215,6 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         tabLayout.getTabAt(0).setText("Connection List");
         tabLayout.getTabAt(1).setText("Pending List");
         tabLayout.getTabAt(2).setText("Paid List");
-    }
-
-    /**
-     * onClick action for FAB click
-     */
-    public void fabClick(){
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(final View view) {
-                MaterialDialog mainDialog = new MaterialDialog.Builder(CustomerListActivity.this)
-                        .title("Add new Connection")
-                        .customView(R.layout.dialog_add_new_connection, true)
-                        .build();
-
-                final View newView = mainDialog.getView();
-                onClickAdd(newView, mainDialog);
-
-                mainDialog.show();
-            }
-        });
     }
 
     /**
