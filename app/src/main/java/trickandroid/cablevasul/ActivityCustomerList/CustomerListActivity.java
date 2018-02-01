@@ -64,8 +64,8 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         setProgressBar();
         auth.initializeFBAuth();
         setupViewPager();
+        cancelProgressBar();
         fabClick();
-
     }
 
     /**
@@ -100,6 +100,25 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         toolbar.setTitle(getAreaName());
         toolbar.setSubtitle(dateSetter.ddmmyyyyday());
         setSupportActionBar(toolbar);
+    }
+
+    /**
+     * Cancels progressBar after the firebase values are loaded
+     */
+    public void cancelProgressBar(){
+        nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()){
+                    progressBar.dismiss();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     /**
@@ -483,7 +502,6 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         fromPath.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                progressBar.dismiss();
                 toPath.setValue(dataSnapshot.getValue(), new DatabaseReference.CompletionListener() {
                     @Override
                     public void onComplete(DatabaseError databaseError, DatabaseReference databaseReference) {

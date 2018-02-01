@@ -1,5 +1,7 @@
 package trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,9 +12,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 
 import trickandroid.cablevasul.ActivityCustomerList.Details.NewConnectionDetails;
 import trickandroid.cablevasul.ActivityCustomerList.ViewHolder.ConnectionListViewHolder;
@@ -77,7 +85,7 @@ public class FragmentConnectionList extends Fragment {
                 holder.connectionDateTV.setText(model.getDate());
                 holder.paidTV.setText(model.getPaid());
                 setTextColorofPaidTV(holder);
-
+                onClickCallImg(holder);
             }
 
             @Override
@@ -93,14 +101,67 @@ public class FragmentConnectionList extends Fragment {
         connectionListRV.setAdapter(adapter);
     }
 
+    /**
+     * onClick Call Button gets the value(mobileNumber) of the Corresponding User
+     * @param holder
+     */
     public void onClickCallImg(final ConnectionListViewHolder holder){
         holder.callImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String connectionNumber = holder.connectionNumberTV.getText().toString();
 
+                nodes.getNodeConnectionListPerMonth()
+                        .child(getAreaName())
+                        .child(dateSetter.monthAndYear())
+                        .child(connectionNumber)
+                        .child("mobileNumber").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String mobileNumber = dataSnapshot.getValue(String.class);
+                        displayCallDialog(mobileNumber);
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
             }
         });
+    }
+
+    /**
+     * Display a Dialog that contains mobileNumber
+     * When Call button is clicked it Opens the dailer to make a call
+     * @param mobileNumber
+     */
+    public void displayCallDialog(final String mobileNumber){
+        new MaterialDialog.Builder(getContext())
+                .title("Call")
+                .content("Are you sure want to Call " + mobileNumber)
+                .iconRes(R.drawable.ic_phone)
+                .positiveText("Call")
+                .positiveColor(getResources().getColor(R.color.Blue))
+                .negativeText("Cancel")
+                .negativeColor(getResources().getColor(R.color.Red))
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        Intent call = new Intent(Intent.ACTION_DIAL);
+                        call.setData(Uri.parse("tel:"+mobileNumber));
+                        startActivity(call);
+                    }
+                })
+                .onNegative(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+                        dialog.dismiss();
+                    }
+                })
+                .cancelable(false)
+                .show();
+
     }
 
     /**
