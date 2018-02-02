@@ -10,14 +10,9 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.ValueEventListener;
 
 import trickandroid.cablevasul.ActivityArea.Details.AreaDetails;
 import trickandroid.cablevasul.ActivityArea.ViewHolder.AreaViewHolder;
@@ -66,7 +61,7 @@ public class FragmentAreaList extends Fragment {
         areaAdapter = new FirebaseRecyclerAdapter<AreaDetails, AreaViewHolder>(areaDetail) {
             @Override
             protected void onBindViewHolder(final AreaViewHolder holder, int position, AreaDetails model) {
-                holder.areaTV.setText(model.getAreaNama());
+                holder.areaTV.setText(model.getAreaName());
                 holder.totalConnectionTV.setText(String.valueOf(model.getTotalConnections()));
                 holder.pendingTV.setText(String.valueOf(model.getPendingConnections()));
 

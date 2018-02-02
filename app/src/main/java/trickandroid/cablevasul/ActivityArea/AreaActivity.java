@@ -45,10 +45,8 @@ public class AreaActivity extends AppCompatActivity {
 
     //widgets
     private Toolbar toolbar;
-    private RelativeLayout progressLayout;
     private Button fab;
     private TextView totalConnectionsTV, pendingTV, totalAmountTV, amountCollectedTV;
-
 
     //firebase
     private InitialiseFirebaseNodes nodes = new InitialiseFirebaseNodes();
@@ -234,7 +232,7 @@ public class AreaActivity extends AppCompatActivity {
      * Adds new Month Node on every First day of the Month
      */
     public void addMonth(){
-        nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).addValueEventListener(new ValueEventListener() {
+        nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()){
@@ -242,13 +240,13 @@ public class AreaActivity extends AppCompatActivity {
                        @Override
                        public void onDataChange(DataSnapshot dataSnapshot) {
                            if (!dataSnapshot.exists()){
-                               MonthDetails monthDetails = new MonthDetails(dateSetter.wordMonth()+","+dateSetter.year(),0,0,0,0);
-                               nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).setValue(monthDetails);
+                               MonthDetails monthDetails = new MonthDetails(dateSetter.monthAndYear(),0,0,0,0);
+                               nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).setValue(monthDetails);
                            }else {
                                int totalAmount = dataSnapshot.child("totalAmount").getValue(Integer.class);
                                int totalConnections = dataSnapshot.child("totalConnections").getValue(Integer.class);
-                               MonthDetails monthDetails = new MonthDetails(dateSetter.wordMonth()+","+dateSetter.year(),totalConnections,totalConnections,totalAmount,0);
-                               nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).setValue(monthDetails);
+                               MonthDetails monthDetails = new MonthDetails(dateSetter.monthAndYear(),totalConnections,totalConnections,totalAmount,0);
+                               nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).setValue(monthDetails);
                            }
                        }
 

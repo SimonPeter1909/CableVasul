@@ -24,10 +24,10 @@ public class DateSetter {
     }
 
     public String monthAndYear(){
-        return wordMonth()+","+year();
+        return wordMonth(intmonth)+","+year();
     }
 
-    public String wordMonth(){
+    public String wordMonth(int intMonth){
         String wordMonth = "";
         if (intmonth == 0){
             wordMonth = "January";
@@ -54,7 +54,6 @@ public class DateSetter {
         } else if (intmonth == 11){
             wordMonth = "December";
         }
-
         return wordMonth;
     }
 
@@ -93,16 +92,16 @@ public class DateSetter {
     }
 
     public String finalDate(){
-        Log.d(TAG, "finalDate: = " + day()+",  "+wordMonth()+" "+date()+",  "+year());
-        return day()+",  "+wordMonth()+" "+date()+",  "+year();
+        Log.d(TAG, "finalDate: = " + day()+",  "+wordMonth(intmonth)+" "+date()+",  "+year());
+        return day()+",  "+wordMonth(intmonth)+" "+date()+",  "+year();
     }
 
     public String ddmmyyyyday(){
-        return date()+"/"+numberMonth()+"/"+year()+", "+day();
+        return String.format("%02d/%02d/%04d, " + day(),intdate,intmonth,intyear);
     }
 
     public String ddmmyyyy(){
-        return date()+"/"+numberMonth()+"/"+year();
+        return String.format("%02d/%02d/%04d",intdate,intmonth,intyear);
     }
 
     public String year(){

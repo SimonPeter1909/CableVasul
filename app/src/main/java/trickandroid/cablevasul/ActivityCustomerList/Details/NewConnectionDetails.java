@@ -6,12 +6,13 @@ package trickandroid.cablevasul.ActivityCustomerList.Details;
 
 public class NewConnectionDetails {
 
-    String date, name, areaName, monthlyAmount, connectionNumber, mobileNumber, aadharNumber, cafNumber, setUpBoxSerial, paid;
+    String date, name, areaName, monthlyAmount, connectionNumber, mobileNumber, aadharNumber, cafNumber, setUpBoxSerial, paid, monthAndYear;
+    int intDate;
 
     public NewConnectionDetails() {
     }
 
-    public NewConnectionDetails(String date, String name, String areaName, String monthlyAmount, String connectionNumber, String mobileNumber, String aadharNumber, String cafNumber, String setUpBoxSerial, String paid) {
+    public NewConnectionDetails(String date, String name, String areaName, String monthlyAmount, String connectionNumber, String mobileNumber, String aadharNumber, String cafNumber, String setUpBoxSerial, String paid, String monthAndYear, int intDate) {
         this.date = date;
         this.name = name;
         this.areaName = areaName;
@@ -22,22 +23,8 @@ public class NewConnectionDetails {
         this.cafNumber = cafNumber;
         this.setUpBoxSerial = setUpBoxSerial;
         this.paid = paid;
-    }
-
-    @Override
-    public String toString() {
-        return "NewConnectionDetails{" +
-                "date='" + date + '\'' +
-                ", name='" + name + '\'' +
-                ", areaName='" + areaName + '\'' +
-                ", monthlyAmount='" + monthlyAmount + '\'' +
-                ", connectionNumber='" + connectionNumber + '\'' +
-                ", mobileNumber='" + mobileNumber + '\'' +
-                ", aadharNumber='" + aadharNumber + '\'' +
-                ", cafNumber='" + cafNumber + '\'' +
-                ", setUpBoxSerial='" + setUpBoxSerial + '\'' +
-                ", paid='" + paid + '\'' +
-                '}';
+        this.monthAndYear = monthAndYear;
+        this.intDate = intDate;
     }
 
     public String getDate() {
@@ -118,5 +105,39 @@ public class NewConnectionDetails {
 
     public void setPaid(String paid) {
         this.paid = paid;
+    }
+
+    public String getMonthAndYear() {
+        return monthAndYear;
+    }
+
+    public void setMonthAndYear(String monthAndYear) {
+        this.monthAndYear = monthAndYear;
+    }
+
+    public int getIntDate() {
+        return intDate;
+    }
+
+    public void setIntDate(int intDate) {
+        this.intDate = intDate;
+    }
+
+    @Override
+    public String toString() {
+        return "NewConnectionDetails{" +
+                "date='" + date + '\'' +
+                ", name='" + name + '\'' +
+                ", areaName='" + areaName + '\'' +
+                ", monthlyAmount='" + monthlyAmount + '\'' +
+                ", connectionNumber='" + connectionNumber + '\'' +
+                ", mobileNumber='" + mobileNumber + '\'' +
+                ", aadharNumber='" + aadharNumber + '\'' +
+                ", cafNumber='" + cafNumber + '\'' +
+                ", setUpBoxSerial='" + setUpBoxSerial + '\'' +
+                ", paid='" + paid + '\'' +
+                ", monthAndYear='" + monthAndYear + '\'' +
+                ", intDate=" + intDate +
+                '}';
     }
 }

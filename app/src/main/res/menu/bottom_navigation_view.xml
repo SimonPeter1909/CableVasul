@@ -6,6 +6,11 @@
         android:title="@string/add"/>
 
     <item
+        android:id="@+id/if_search"
+        android:icon="@drawable/ic_search"
+        android:title="@string/search"/>
+
+    <item
         android:id="@+id/ic_edit"
         android:icon="@drawable/ic_edit"
         android:title="@string/edit"/>
@@ -19,10 +24,5 @@
         android:id="@+id/ic_shift"
         android:icon="@drawable/ic_shift"
         android:title="@string/shift"/>
-
-    <item
-        android:id="@+id/ic_setting"
-        android:icon="@drawable/ic_setting"
-        android:title="@string/setting"/>
 
 </menu>

@@ -6,7 +6,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
+        app:met_floatingLabel="highlight"
+        app:met_minCharacters="1"
+        app:met_maxCharacters="5"
         android:id="@+id/connectionNumberET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -25,7 +28,10 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.1" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
+        app:met_floatingLabel="highlight"
+        app:met_minCharacters="1"
+        app:met_maxCharacters="20"
         android:id="@+id/nameET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -44,7 +50,10 @@
         app:layout_constraintTop_toBottomOf="@+id/monthlyAmountET"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
+        app:met_floatingLabel="highlight"
+        app:met_minCharacters="10"
+        app:met_maxCharacters="10"
         android:id="@+id/mobileNumberET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -63,7 +72,10 @@
         app:layout_constraintTop_toBottomOf="@+id/nameET"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
+        app:met_floatingLabel="highlight"
+        app:met_minCharacters="12"
+        app:met_maxCharacters="12"
         android:id="@+id/aadharNumberET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -71,7 +83,7 @@
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         android:ems="10"
-        android:hint="Aadhar Number (Optional)"
+        android:hint="Aathar Number"
         android:inputType="number"
         android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -80,7 +92,10 @@
         app:layout_constraintTop_toBottomOf="@+id/mobileNumberET"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
+        app:met_floatingLabel="highlight"
+        app:met_minCharacters="7"
+        app:met_maxCharacters="7"
         android:id="@+id/cafET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -89,7 +104,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="CAF No. (Optional)"
+        android:hint="CAF No"
         android:inputType="number"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -98,7 +113,10 @@
         app:layout_constraintTop_toBottomOf="@+id/aadharNumberET"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
+        app:met_floatingLabel="highlight"
+        app:met_minCharacters="8"
+        app:met_maxCharacters="8"
         android:id="@+id/setUpSerialET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -107,7 +125,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:ems="10"
-        android:hint="Set-Up Box Serial (Optional)"
+        android:hint="Set-Up Box Serial"
         android:inputType="textCapCharacters"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -148,7 +166,10 @@
         app:layout_constraintTop_toBottomOf="@+id/setUpSerialET"
         app:layout_constraintVertical_bias="0.0" />
 
-    <EditText
+    <com.rengwuxian.materialedittext.MaterialEditText
+        app:met_floatingLabel="highlight"
+        app:met_minCharacters="3"
+        app:met_maxCharacters="3"
         android:id="@+id/monthlyAmountET"
         android:layout_width="0dp"
         android:layout_height="wrap_content"

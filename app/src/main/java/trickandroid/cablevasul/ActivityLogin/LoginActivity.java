@@ -35,6 +35,7 @@ import mehdi.sakout.fancybuttons.FancyButton;
 import trickandroid.cablevasul.ActivityArea.AreaActivity;
 import trickandroid.cablevasul.FirebasePackage.InitializeFirebaseAuth;
 import trickandroid.cablevasul.R;
+import trickandroid.cablevasul.Utils.CheckInternet;
 import trickandroid.cablevasul.Utils.DateSetter;
 import trickandroid.cablevasul.Utils.ShowSnackBar;
 
@@ -49,6 +50,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView dateTV;
     private FancyButton loginBTN;
     private ProgressBar progressBar;
+    private MaterialDialog progressDialog;
 
     //sqlite
     private SQLiteDatabase rememberMe;
@@ -56,6 +58,7 @@ public class LoginActivity extends AppCompatActivity {
     //utils
     private ShowSnackBar snackBar = new ShowSnackBar();
     private DateSetter dateSetter = new DateSetter();
+    private CheckInternet checkInternet = new CheckInternet();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,30 +76,20 @@ public class LoginActivity extends AppCompatActivity {
      * checks for internet connection and if the connection fails displays the dialog to check for internet connection
      */
     public void checkInternetConnection() {
-        if (!isNetworkAvailable()) {
-                SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
-                dialog.setTitleText("No Internet Connection!!!");
-                dialog.setContentText("Check your Internet Connection");
-                dialog.setConfirmText("Exit Application");
-                dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
-                    @Override
-                    public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        finish();
-                    }
-                });
-                dialog.setCancelable(false);
-                dialog.show();
+        if (!checkInternet.isNetworkAvailable(this)) {
+            SweetAlertDialog dialog = new SweetAlertDialog(this, SweetAlertDialog.ERROR_TYPE);
+            dialog.setTitleText("No Internet Connection!!!");
+            dialog.setContentText("Check your Internet Connection");
+            dialog.setConfirmText("Exit Application");
+            dialog.setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                @Override
+                public void onClick(SweetAlertDialog sweetAlertDialog) {
+                    finish();
+                }
+            });
+            dialog.setCancelable(false);
+            dialog.show();
         }
-    }
-
-    /**
-     * checks for internet connection and returns the boolean value
-     * @return
-     */
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     /**
@@ -107,16 +100,23 @@ public class LoginActivity extends AppCompatActivity {
     public void loginClick(View view) {
         String email = emailET.getText().toString() + "@simon.com";
         String password = passwordET.getText().toString();
-
         if (email.isEmpty()) {
             snackBar.snackBar(view, "Enter E-Mail");
         } else if (password.isEmpty()) {
             snackBar.snackBar(view, "Enter Password");
         } else {
             if (checkDate()) {
+                MaterialDialog.Builder progressBuilder = new MaterialDialog.Builder(this)
+                        .title("Logging You in")
+                        .content("Please Wait...")
+                        .progress(true,0)
+                        .progressIndeterminateStyle(true);
+                progressDialog = progressBuilder.build();
+                progressDialog.setCancelable(false);
+                progressDialog.show();
                 loginUser(email, password, view);
             } else {
-                snackBar.snackBar(view, "Set Correct Date in your Mobile");
+                snackBar.snackBar(view, "Check your Internet Connection");
             }
         }
     }
@@ -198,7 +198,6 @@ public class LoginActivity extends AppCompatActivity {
      */
     public void setDate() {
         new Thread(new Runnable() {
-
             @Override
             public void run() {
                 String dateStatement;
@@ -216,6 +215,13 @@ public class LoginActivity extends AppCompatActivity {
                     Log.d(TAG, "run: running");
                 } catch (IOException e) {
                     Log.d(TAG, "run: error " + e);
+                    loginBTN.setText("Press to Reload");
+                    loginBTN.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            if (loginBTN.getText().toString().equals("Press to Reload")) recreate();
+                        }
+                    });
                 }
 
                 final String finalDate1 = finalDate;
@@ -250,6 +256,7 @@ public class LoginActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             snackBar.snackBar(view, "Login Successfull");
                             rememberMe();
+                            progressDialog.dismiss();
                             startActivity(new Intent(LoginActivity.this, AreaActivity.class));
                             finish();
                         } else {

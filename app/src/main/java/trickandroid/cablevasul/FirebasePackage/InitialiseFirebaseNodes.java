@@ -71,6 +71,10 @@ public class InitialiseFirebaseNodes {
         return mainNode.getReference().child(getUserID.getUserId()).child("ConnectionList");
     }
 
+    public DatabaseReference getNodeDailyList(){
+        return mainNode.getReference().child(getUserID.getUserId()).child("DailyList");
+    }
+
     public static class getUserID{
         public String getUserId() {
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();

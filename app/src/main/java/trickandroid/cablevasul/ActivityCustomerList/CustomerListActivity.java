@@ -30,6 +30,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.Date;
 
@@ -139,15 +141,15 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         bottomNavigationViewEx.enableShiftingMode(false);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             bottomNavigationViewEx.setIconTintList(0,getColorStateList(R.color.Green));
-            bottomNavigationViewEx.setIconTintList(1,getColorStateList(R.color.Blue));
-            bottomNavigationViewEx.setIconTintList(2,getColorStateList(R.color.Red));
-            bottomNavigationViewEx.setIconTintList(3,getColorStateList(R.color.DarkOrange));
-            bottomNavigationViewEx.setIconTintList(4,getColorStateList(R.color.Black));
+            bottomNavigationViewEx.setIconTintList(1,getColorStateList(R.color.Brown));
+            bottomNavigationViewEx.setIconTintList(2,getColorStateList(R.color.Blue));
+            bottomNavigationViewEx.setIconTintList(3,getColorStateList(R.color.Red));
+            bottomNavigationViewEx.setIconTintList(4,getColorStateList(R.color.DarkOrange));
             bottomNavigationViewEx.setTextTintList(0,getColorStateList(R.color.Green));
-            bottomNavigationViewEx.setTextTintList(1,getColorStateList(R.color.Blue));
-            bottomNavigationViewEx.setTextTintList(2,getColorStateList(R.color.Red));
-            bottomNavigationViewEx.setTextTintList(3,getColorStateList(R.color.DarkOrange));
-            bottomNavigationViewEx.setTextTintList(4,getColorStateList(R.color.Black));
+            bottomNavigationViewEx.setTextTintList(1,getColorStateList(R.color.Brown));
+            bottomNavigationViewEx.setTextTintList(2,getColorStateList(R.color.Blue));
+            bottomNavigationViewEx.setTextTintList(3,getColorStateList(R.color.Red));
+            bottomNavigationViewEx.setTextTintList(4,getColorStateList(R.color.DarkOrange));
         }
         onNavigationItemSelected(bottomNavigationViewEx);
     }
@@ -176,6 +178,8 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
     public void displayAddDialog(){
         MaterialDialog mainDialog = new MaterialDialog.Builder(CustomerListActivity.this)
                 .title("Add new Connection")
+                .titleColorRes(R.color.Blue)
+                .iconRes(R.drawable.ic_add)
                 .customView(R.layout.dialog_add_new_connection, true)
                 .build();
 
@@ -248,15 +252,56 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                if (nameString(newView).isEmpty()){
-                    snackBar.snackBar(view,"Enter Name");
-                } else if (mobileNumberString(newView).isEmpty()){
-                    snackBar.snackBar(view,"Enter Mobile Number");
-                } else if (connectionNumberString(newView).isEmpty()){
-                    snackBar.snackBar(view,"Enter Connection Number");
-                } else if (monthlyAmountString(newView).isEmpty()){
-                    snackBar.snackBar(view,"Enter Monthly Amount");
-                } else {
+                if (connectionNumberString(newView).isEmpty() || connectionNumberString(newView).length()>5){
+                    displayErrorDialog("Enter Connection Number", "Connection Number Should Contain 1-5 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+                } else  if (monthlyAmountString(newView).isEmpty() || monthlyAmountString(newView).length()>3){
+                    displayErrorDialog("Enter Monthly Amount", "Monthly Amount Should Contain 3 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+                } else if (nameString(newView).isEmpty() || nameString(newView).length()>20){
+                    displayErrorDialog("Enter Name", "Name Should Contain 1-20 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+                } else if (mobileNumberString(newView).isEmpty() || mobileNumberString(newView).length()>10){
+                    displayErrorDialog("Enter Mobile Number", "Mobile Number Should Contain 10 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+                } else if (aadharNumberString(newView).isEmpty() || aadharNumberString(newView).length()>12){
+                    displayErrorDialog("Enter Aathar Number", "Aathar Number Should Contain 12 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+                } else if (cafNumberString(newView).isEmpty() || cafNumberString(newView).length()>7){
+                    displayErrorDialog("Enter CAF Number", "CAF Number Should Contain 7 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+                } else if (setUpBoxSerialNumberString(newView).isEmpty() || setUpBoxSerialNumberString(newView).length()>8){
+                    displayErrorDialog("Enter SetTop Box Serial Number", "SetTop Box Serial Should Contain 8 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.dismissWithAnimation();
+                        }
+                    });
+                } else{
                     nodes.getNodeCheckConnectionNumber().child(getAreaName()).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
@@ -279,6 +324,15 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
                 }
             }
         });
+    }
+
+    public SweetAlertDialog displayErrorDialog(String title, String content){
+        SweetAlertDialog dialog = new SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE)
+                .setTitleText(title)
+                .setContentText(content);
+        dialog.setCancelable(false);
+        dialog.show();
+        return dialog;
     }
 
     /**
@@ -305,17 +359,25 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
      */
     public void newConnectionsDetails(View newView, View view, MaterialDialog mainDialog,CheckBox paidCB){
         String paid = "Unpaid";
+
+        //inserts connection number value in connectionNumberCheck Node
         nodes.getNodeCheckConnectionNumber().child(getAreaName()).child(connectionNumberString(newView)).setValue(connectionNumberString(newView));
 
         if (paidCB.isChecked()){
             paid = "Paid";
-            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid);
-            NewConnectionDetails newConnectionDetailsUnpaid = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),"Unpaid");
+
+            //adds value to the connectionListPerMonth node and PaidList node , with month node
+            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid,stringMonthAndYear(),intDate());
             nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodePaidList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
+
+            //adds value to the connectionList node, without month node, String paid = UnPaid
+            NewConnectionDetails newConnectionDetailsUnpaid = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),"Unpaid",stringMonthAndYear(),intDate());
             nodes.getNodeConnectionList().child(getAreaName()).child(connectionNumberString(newView)).setValue(newConnectionDetailsUnpaid);
         } else {
-            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid);
+
+            //adds value to the connectionListPerMonth node and PendingList and connectionList node
+            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid,stringMonthAndYear(),intDate());
             nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodePendingList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodeConnectionList().child(getAreaName()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
@@ -325,6 +387,8 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
 
         editValuePerArea(paidCB);
 
+        setDailyList(paidCB);
+
         Toast.makeText(getApplicationContext(),"'"+connectionNumberString(newView)+"', '"+nameString(newView)+"' Successfully Added to Area '" + getAreaName() + "'",Toast.LENGTH_SHORT).show();
         snackBar.snackBar(view, "'"+connectionNumberString(newView)+"', '"+nameString(newView)+"' Successfully Added to Area '" + getAreaName() + "'");
 
@@ -332,10 +396,69 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
     }
 
     /**
+     * get the value from the newConnectionDateTV, splits and returns monthAndYear String
+     * @return
+     */
+    public String stringMonthAndYear(){
+        String dateFormTV = newConnectionDateTV.getText().toString();
+        String dateArray[] = dateFormTV.split("/");
+        return dateSetter.wordMonth(Integer.parseInt(dateArray[1]))+","+dateArray[2];
+    }
+
+    /**
+     *  get the value from the newConnectionDateTV, splits and returns intDate
+     * @return
+     */
+    public int intDate(){
+        String dateFormTV = newConnectionDateTV.getText().toString();
+        String dateArray[] = dateFormTV.split("/");
+        return Integer.parseInt(dateArray[0]);
+    }
+
+    public void setDailyList(final CheckBox paidCB){
+        String stringDate = newConnectionDateTV.getText().toString();
+        String[] dateArray = stringDate.split("/");
+        final String date = dateArray[0];
+        final String month = dateArray[1]+","+dateArray[2];
+        nodes.getNodeDailyList()
+                .child(month)
+                .child(date).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists() && !paidCB.isChecked()){
+                    nodes.getNodeDailyList().child(month).child(date).setValue(1);
+                } else if (!paidCB.isChecked()){
+                    nodes.getNodeDailyList()
+                            .child(month)
+                            .child(date).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            int count = dataSnapshot.getValue(Integer.class);
+                            nodes.getNodeDailyList().child(month).child(date).setValue(count+1);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    /**
      * Changes the value of overall connections of the user, method called inside newConnectionsDetails
      * @param view
      */
     public void setTotalAmount(final View view, final CheckBox paidCB) {
+
+        //TotalAmount
         nodes.getNodeTotalAmount().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -344,7 +467,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
 
                 nodes.getNodeTotalAmount().child("TotalAmount").setValue(totalAmount+intMonthlyAmount(view));
                 nodes.getNodeVasulList().child("totalAmount").setValue(totalAmount+intMonthlyAmount(view));
-                nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).child("totalAmount").setValue(totalAmount+intMonthlyAmount(view));
+                nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).child("totalAmount").setValue(totalAmount+intMonthlyAmount(view));
 
             }
 
@@ -354,6 +477,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
             }
         });
 
+        //TotalConnections
         nodes.getNodeTotalConnections().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -362,7 +486,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
 
                 nodes.getNodeTotalConnections().child("TotalConnections").setValue(intTotal+1);
                 nodes.getNodeVasulList().child("totalConnections").setValue(intTotal+1);
-                nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).child("totalConnections").setValue(intTotal+1);
+                nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).child("totalConnections").setValue(intTotal+1);
             }
 
             @Override
@@ -371,6 +495,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
             }
         });
 
+        //AmountCollected
         nodes.getNodeAmountCollected().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -379,12 +504,10 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
 
                 if (paidCB.isChecked()){
                     nodes.getNodeAmountCollected().child("AmountCollected").setValue(amountCollected + intMonthlyAmount(view));
-                    nodes.getNodeVasulList().child("amountCollected").setValue(amountCollected + intMonthlyAmount(view));
-                    nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).child("amountCollected").setValue(amountCollected + intMonthlyAmount(view));
+                    nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).child("amountCollected").setValue(amountCollected + intMonthlyAmount(view));
                 } else {
                     nodes.getNodeAmountCollected().child("AmountCollected").setValue(amountCollected);
-                    nodes.getNodeVasulList().child("amountCollected").setValue(amountCollected);
-                    nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).child("amountCollected").setValue(amountCollected);
+                    nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).child("amountCollected").setValue(amountCollected);
                 }
 
             }
@@ -395,6 +518,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
             }
         });
 
+        //PendingConnections
         nodes.getNodePendingConnections().addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
@@ -403,12 +527,10 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
 
                 if (paidCB.isChecked()){
                     nodes.getNodePendingConnections().child("PendingConnections").setValue(pendingConnections);
-                    nodes.getNodeVasulList().child("pendingConnections").setValue(pendingConnections);
-                    nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).child("pendingConnections").setValue(pendingConnections);
+                    nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).child("pendingConnections").setValue(pendingConnections);
                 } else {
                     nodes.getNodePendingConnections().child("PendingConnections").setValue(pendingConnections+1);
-                    nodes.getNodeVasulList().child("pendingConnections").setValue(pendingConnections+1);
-                    nodes.getNodeMonthDetails().child(dateSetter.wordMonth()+","+dateSetter.year()).child("pendingConnections").setValue(pendingConnections+1);
+                    nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).child("pendingConnections").setValue(pendingConnections+1);
                 }
             }
 
@@ -471,7 +593,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
      * @return
      */
     public String nameString(View view){
-        EditText nameET = view.findViewById(R.id.nameET);
+        MaterialEditText nameET = view.findViewById(R.id.nameET);
         return nameET.getText().toString();
     }
 
@@ -481,7 +603,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
      * @return
      */
     public String mobileNumberString(View view){
-        EditText editText = view.findViewById(R.id.mobileNumberET);
+        MaterialEditText editText = view.findViewById(R.id.mobileNumberET);
         return editText.getText().toString();
     }
 
@@ -491,7 +613,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
      * @return
      */
     public String connectionNumberString(View view){
-        EditText editText = view.findViewById(R.id.connectionNumberET);
+        MaterialEditText editText = view.findViewById(R.id.connectionNumberET);
         return editText.getText().toString();
     }
 
@@ -501,7 +623,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
      * @return
      */
     public String monthlyAmountString(View view){
-        EditText editText = view.findViewById(R.id.monthlyAmountET);
+        MaterialEditText editText = view.findViewById(R.id.monthlyAmountET);
         return editText.getText().toString();
     }
 
@@ -511,7 +633,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
      * @return
      */
     public String aadharNumberString(View view){
-        EditText editText = view.findViewById(R.id.aadharNumberET);
+        MaterialEditText editText = view.findViewById(R.id.aadharNumberET);
         return editText.getText().toString();
     }
 
@@ -521,7 +643,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
      * @return
      */
     public String cafNumberString(View view){
-        EditText editText = view.findViewById(R.id.cafET);
+        MaterialEditText editText = view.findViewById(R.id.cafET);
         return editText.getText().toString();
     }
 
@@ -531,7 +653,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
      * @return
      */
     public String setUpBoxSerialNumberString(View view){
-        EditText editText = view.findViewById(R.id.setUpSerialET);
+        MaterialEditText editText = view.findViewById(R.id.setUpSerialET);
         return editText.getText().toString();
     }
 
@@ -578,21 +700,8 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists()){
-                    copyConnectionList(nodes.getNodeConnectionList().child(getAreaName()),nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()));
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-
-            }
-        });
-
-        nodes.getNodePendingList().child(getAreaName()).child(dateSetter.monthAndYear()).addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if (!dataSnapshot.exists()){
                     copyConnectionList(nodes.getNodeConnectionList().child(getAreaName()),nodes.getNodePendingList().child(getAreaName()).child(dateSetter.monthAndYear()));
+                    copyConnectionList(nodes.getNodeConnectionList().child(getAreaName()),nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()));
                 }
             }
 

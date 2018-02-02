@@ -17,12 +17,12 @@ public class AreaDetails {
         this.pendingConnections = pendingConnections;
     }
 
-    public String getAreaNama() {
+    public String getAreaName() {
         return areaName;
     }
 
-    public void setAreaNama(String areaNama) {
-        this.areaName = areaNama;
+    public void setAreaName(String areaName) {
+        this.areaName = areaName;
     }
 
     public int getTotalConnections() {
@@ -44,7 +44,7 @@ public class AreaDetails {
     @Override
     public String toString() {
         return "AreaDetails{" +
-                "areaNama='" + areaName + '\'' +
+                "areaName='" + areaName + '\'' +
                 ", totalConnections='" + totalConnections + '\'' +
                 ", pendingConnections='" + pendingConnections + '\'' +
                 '}';
