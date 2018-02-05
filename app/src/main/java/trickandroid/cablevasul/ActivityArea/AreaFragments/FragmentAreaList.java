@@ -56,8 +56,6 @@ public class FragmentAreaList extends Fragment {
                 .setQuery(nodes.getNodeAreaDetails(), AreaDetails.class)
                 .build();
 
-
-
         areaAdapter = new FirebaseRecyclerAdapter<AreaDetails, AreaViewHolder>(areaDetail) {
             @Override
             protected void onBindViewHolder(final AreaViewHolder holder, int position, AreaDetails model) {

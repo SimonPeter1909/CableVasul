@@ -260,7 +260,17 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(new Intent(LoginActivity.this, AreaActivity.class));
                             finish();
                         } else {
-                            snackBar.snackBar(view, "Incorrect Username or Password");
+                            progressDialog.dismiss();
+                            new SweetAlertDialog(LoginActivity.this,SweetAlertDialog.ERROR_TYPE)
+                                    .setTitleText("Error")
+                                    .setContentText("Incorrect Username or Password")
+                                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                                        @Override
+                                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                                            sweetAlertDialog.dismissWithAnimation();
+                                        }
+                                    })
+                                    .show();
                         }
                     }
                 });

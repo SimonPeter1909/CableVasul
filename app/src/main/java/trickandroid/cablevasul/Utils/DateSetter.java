@@ -12,7 +12,10 @@ public class DateSetter {
 
     private static final String TAG = "DateSetter";
 
-    private Calendar calendar = Calendar.getInstance();
+    public Calendar calendar = Calendar.getInstance();
+    public int intHour = calendar.get(Calendar.HOUR);
+    public int intMinute = calendar.get(Calendar.MINUTE);
+    public int intSeconds = calendar.get(Calendar.SECOND);
     public int intdate = calendar.get(Calendar.DATE);
     public int intmonth = calendar.get(Calendar.MONTH);
     public int intyear = calendar.get(Calendar.YEAR);
@@ -91,17 +94,21 @@ public class DateSetter {
         return String.valueOf(intmonth + 1);
     }
 
+    /**
+     * Used in Login Activity to check parsed data
+     * @return
+     */
     public String finalDate(){
         Log.d(TAG, "finalDate: = " + day()+",  "+wordMonth(intmonth)+" "+date()+",  "+year());
         return day()+",  "+wordMonth(intmonth)+" "+date()+",  "+year();
     }
 
     public String ddmmyyyyday(){
-        return String.format("%02d/%02d/%04d, " + day(),intdate,intmonth,intyear);
+        return String.format("%02d/%02d/%04d, " + day(),intdate,intmonth+1,intyear);
     }
 
     public String ddmmyyyy(){
-        return String.format("%02d/%02d/%04d",intdate,intmonth,intyear);
+        return String.format("%02d/%02d/%04d",intdate,intmonth+1,intyear);
     }
 
     public String year(){

@@ -7,7 +7,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -18,7 +17,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,7 +25,6 @@ import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
@@ -35,6 +32,7 @@ import com.rengwuxian.materialedittext.MaterialEditText;
 
 import java.util.Date;
 
+import trickandroid.cablevasul.ActivityArea.Details.AreaDetails;
 import trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments.FragmentConnectionList;
 import trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments.FragmentPaidList;
 import trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments.FragmentPendingList;
@@ -252,49 +250,49 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         addBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(final View view) {
-                if (connectionNumberString(newView).isEmpty() || connectionNumberString(newView).length()>5){
+                if (connectionNumberString(newView).isEmpty() || connectionNumberString(newView).length()<1 || connectionNumberString(newView).length()>5){
                     displayErrorDialog("Enter Connection Number", "Connection Number Should Contain 1-5 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
                         }
                     });
-                } else  if (monthlyAmountString(newView).isEmpty() || monthlyAmountString(newView).length()>3){
+                } else  if (monthlyAmountString(newView).isEmpty() || monthlyAmountString(newView).length()<3 || monthlyAmountString(newView).length()>3){
                     displayErrorDialog("Enter Monthly Amount", "Monthly Amount Should Contain 3 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
                         }
                     });
-                } else if (nameString(newView).isEmpty() || nameString(newView).length()>20){
+                } else if (nameString(newView).isEmpty() || nameString(newView).length()<1 || nameString(newView).length()>20){
                     displayErrorDialog("Enter Name", "Name Should Contain 1-20 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
                         }
                     });
-                } else if (mobileNumberString(newView).isEmpty() || mobileNumberString(newView).length()>10){
+                } else if (mobileNumberString(newView).isEmpty() || mobileNumberString(newView).length()<10 || mobileNumberString(newView).length()>10){
                     displayErrorDialog("Enter Mobile Number", "Mobile Number Should Contain 10 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
                         }
                     });
-                } else if (aadharNumberString(newView).isEmpty() || aadharNumberString(newView).length()>12){
+                } else if (aadharNumberString(newView).isEmpty() || aadharNumberString(newView).length()<12 || aadharNumberString(newView).length()>12){
                     displayErrorDialog("Enter Aathar Number", "Aathar Number Should Contain 12 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
                         }
                     });
-                } else if (cafNumberString(newView).isEmpty() || cafNumberString(newView).length()>7){
+                } else if (cafNumberString(newView).isEmpty() || cafNumberString(newView).length()<7 || cafNumberString(newView).length()>7){
                     displayErrorDialog("Enter CAF Number", "CAF Number Should Contain 7 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
                             sweetAlertDialog.dismissWithAnimation();
                         }
                     });
-                } else if (setUpBoxSerialNumberString(newView).isEmpty() || setUpBoxSerialNumberString(newView).length()>8){
+                } else if (setUpBoxSerialNumberString(newView).isEmpty() ||setUpBoxSerialNumberString(newView).length()<8 || setUpBoxSerialNumberString(newView).length()>8){
                     displayErrorDialog("Enter SetTop Box Serial Number", "SetTop Box Serial Should Contain 8 Characters").setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                         @Override
                         public void onClick(SweetAlertDialog sweetAlertDialog) {
@@ -326,6 +324,12 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         });
     }
 
+    /**
+     * displays error dialog when editText fields are not up to the course
+     * @param title
+     * @param content
+     * @return
+     */
     public SweetAlertDialog displayErrorDialog(String title, String content){
         SweetAlertDialog dialog = new SweetAlertDialog(this,SweetAlertDialog.WARNING_TYPE)
                 .setTitleText(title)
@@ -367,17 +371,17 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
             paid = "Paid";
 
             //adds value to the connectionListPerMonth node and PaidList node , with month node
-            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid,stringMonthAndYear(),intDate());
+            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView), dateSetter.ddmmyyyy(),paid,stringMonthAndYear(),intDate());
             nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodePaidList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
 
             //adds value to the connectionList node, without month node, String paid = UnPaid
-            NewConnectionDetails newConnectionDetailsUnpaid = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),"Unpaid",stringMonthAndYear(),intDate());
+            NewConnectionDetails newConnectionDetailsUnpaid = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView), "Unpaid","Unpaid",stringMonthAndYear(),intDate());
             nodes.getNodeConnectionList().child(getAreaName()).child(connectionNumberString(newView)).setValue(newConnectionDetailsUnpaid);
         } else {
 
             //adds value to the connectionListPerMonth node and PendingList and connectionList node
-            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid,stringMonthAndYear(),intDate());
+            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid,paid,stringMonthAndYear(),intDate());
             nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodePendingList().child(getAreaName()).child(dateSetter.monthAndYear()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
             nodes.getNodeConnectionList().child(getAreaName()).child(connectionNumberString(newView)).setValue(newConnectionDetails);
@@ -387,7 +391,7 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
 
         editValuePerArea(paidCB);
 
-        setDailyList(paidCB);
+        setDailyList(paidCB, newView);
 
         Toast.makeText(getApplicationContext(),"'"+connectionNumberString(newView)+"', '"+nameString(newView)+"' Successfully Added to Area '" + getAreaName() + "'",Toast.LENGTH_SHORT).show();
         snackBar.snackBar(view, "'"+connectionNumberString(newView)+"', '"+nameString(newView)+"' Successfully Added to Area '" + getAreaName() + "'");
@@ -415,33 +419,45 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
         return Integer.parseInt(dateArray[0]);
     }
 
-    public void setDailyList(final CheckBox paidCB){
-        String stringDate = newConnectionDateTV.getText().toString();
-        String[] dateArray = stringDate.split("/");
-        final String date = dateArray[0];
-        final String month = dateArray[1]+","+dateArray[2];
-        nodes.getNodeDailyList()
-                .child(month)
-                .child(date).addListenerForSingleValueEvent(new ValueEventListener() {
+    public void setDailyList(final CheckBox paidCB, final View newView){
+        final String date = newConnectionDateTV.getText().toString().replace("/",",");
+        String paid = "Unpaid";
+        if (paidCB.isChecked()){
+            paid = "Paid";
+            //adds value to the connectionListPerMonth node and PaidList node , with month node
+            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),dateSetter.ddmmyyyy(),paid,stringMonthAndYear(),intDate());
+            nodes.getNodeDailyList().child(date).child("Connection List").child("paidList").child(connectionNumberString(newView)).setValue(newConnectionDetails);
+        } else {
+            //adds value to the connectionListPerMonth node and PendingList and connectionList node
+            NewConnectionDetails newConnectionDetails = new NewConnectionDetails(newConnectionDateTV.getText().toString(),nameString(newView), getAreaName(), monthlyAmountString(newView),connectionNumberString(newView),mobileNumberString(newView),aadharNumberString(newView),cafNumberString(newView),setUpBoxSerialNumberString(newView),paid,paid,stringMonthAndYear(),intDate());
+            nodes.getNodeDailyList().child(date).child("Connection List").child("pending list").child(connectionNumberString(newView)).setValue(newConnectionDetails);
+        }
+
+        //DailyListNode for notification
+        nodes.getNodeDailyList().child(date).child("notification").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if (!dataSnapshot.exists() && !paidCB.isChecked()){
-                    nodes.getNodeDailyList().child(month).child(date).setValue(1);
-                } else if (!paidCB.isChecked()){
-                    nodes.getNodeDailyList()
-                            .child(month)
-                            .child(date).addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(DataSnapshot dataSnapshot) {
-                            int count = dataSnapshot.getValue(Integer.class);
-                            nodes.getNodeDailyList().child(month).child(date).setValue(count+1);
-                        }
+                    //Since AreaDetails Class contains the same Parameters, it is used
+                    AreaDetails areaDetails = new AreaDetails(date,1,1);
+                    nodes.getNodeDailyList().child(date).child("notification").setValue(areaDetails);
+                } else if (!dataSnapshot.exists() && paidCB.isChecked()){
+                    //Since AreaDetails Class contains the same Parameters, it is used
+                    AreaDetails areaDetails = new AreaDetails(date,1,0);
+                    nodes.getNodeDailyList().child(date).child("notification").setValue(areaDetails);
+                } else {
 
-                        @Override
-                        public void onCancelled(DatabaseError databaseError) {
+                    int totalConnection = dataSnapshot.child("totalConnections").getValue(Integer.class);
+                    int pendingConnection = dataSnapshot.child("pendingConnections").getValue(Integer.class);
+                    Log.d(TAG, "onDataChange: total connection per area = " + String.valueOf(totalConnection));
 
-                        }
-                    });
+                    if (paidCB.isChecked()){
+                        nodes.getNodeDailyList().child(date).child("notification").child("totalConnections").setValue(totalConnection+1);
+                        nodes.getNodeDailyList().child(date).child("notification").child("pendingConnections").setValue(pendingConnection);
+                    } else {
+                        nodes.getNodeDailyList().child(date).child("notification").child("totalConnections").setValue(totalConnection+1);
+                        nodes.getNodeDailyList().child(date).child("notification").child("pendingConnections").setValue(pendingConnection+1);
+                    }
                 }
             }
 
@@ -450,6 +466,9 @@ public class CustomerListActivity extends AppCompatActivity implements DatePicke
 
             }
         });
+
+        //dailyList - dateList node
+        nodes.getNodeDailyList().child("dateList").child(date).setValue(date);
     }
 
     /**

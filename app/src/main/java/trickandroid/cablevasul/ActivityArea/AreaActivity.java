@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
 import trickandroid.cablevasul.ActivityArea.AreaFragments.FragmentAreaList;
+import trickandroid.cablevasul.ActivityArea.AreaFragments.FragmentDailyList;
 import trickandroid.cablevasul.ActivityArea.AreaFragments.FragmentMonthList;
 import trickandroid.cablevasul.ActivityArea.Details.AreaDetails;
 import trickandroid.cablevasul.ActivityArea.Details.MonthDetails;
@@ -146,9 +147,13 @@ public class AreaActivity extends AppCompatActivity {
         Fragment monthList = FragmentMonthList.newInstance();
         monthList.setArguments(bundle);
 
+        Fragment dailyList = FragmentDailyList.newInstance();
+        dailyList.setArguments(bundle);
+
         SectionPagerAdapter sectionPagerAdapter = new SectionPagerAdapter(getSupportFragmentManager());
         sectionPagerAdapter.addFragments(areaList,"area");
         sectionPagerAdapter.addFragments(monthList,"area");
+        sectionPagerAdapter.addFragments(dailyList,"area");
 
         ViewPager viewPager = findViewById(R.id.container);
         viewPager.setAdapter(sectionPagerAdapter);
@@ -158,6 +163,7 @@ public class AreaActivity extends AppCompatActivity {
 
         tabLayout.getTabAt(0).setText("Area List");
         tabLayout.getTabAt(1).setText("Month List");
+        tabLayout.getTabAt(2).setText("Daily List");
     }
 
     /**

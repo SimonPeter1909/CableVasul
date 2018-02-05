@@ -23,6 +23,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import trickandroid.cablevasul.ActivityCustomerList.Details.NewConnectionDetails;
+import trickandroid.cablevasul.ActivityCustomerList.DetailsActivity;
+import trickandroid.cablevasul.ActivityCustomerList.Functions.OnClickCallImage;
 import trickandroid.cablevasul.ActivityCustomerList.ViewHolder.ConnectionListViewHolder;
 import trickandroid.cablevasul.FirebasePackage.InitialiseFirebaseNodes;
 import trickandroid.cablevasul.R;
@@ -40,6 +42,7 @@ public class FragmentConnectionList extends Fragment {
     private FirebaseRecyclerAdapter<NewConnectionDetails, ConnectionListViewHolder> adapter;
     private InitialiseFirebaseNodes nodes = new InitialiseFirebaseNodes();
     private DateSetter dateSetter = new DateSetter();
+    private OnClickCallImage onClickCallImage = new OnClickCallImage();
 
     //Dialogs
     private SweetAlertDialog firstDialog, payDialog, loadingDialog;
@@ -90,7 +93,7 @@ public class FragmentConnectionList extends Fragment {
                 holder.connectionDateTV.setText(model.getDate());
                 holder.paidTV.setText(model.getPaid());
                 setTextColorofPaidTV(holder);
-                onClickCallImg(holder);
+                onClickCallImage.onClickCallImg(holder,getContext(),getAreaName());
                 onHolderClick(holder, model);
             }
 
@@ -117,7 +120,12 @@ public class FragmentConnectionList extends Fragment {
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openFirstDialog(model);
+                if (model.getPaid().equals("Paid")){
+                    openDetailsActivity(model);
+                } else {
+                    openFirstDialog(model);
+                }
+
             }
         });
     }
@@ -136,14 +144,34 @@ public class FragmentConnectionList extends Fragment {
                 .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
                     @Override
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
-                        firstDialog.dismissWithAnimation();
+                        sweetAlertDialog.dismissWithAnimation();
                         openPayDialog(model);
+                    }
+                })
+                .setCancelClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                    @Override
+                    public void onClick(SweetAlertDialog sweetAlertDialog) {
+                        sweetAlertDialog.dismissWithAnimation();
+                        openDetailsActivity(model);
                     }
                 });
 
 
         firstDialog.setCancelable(true);
         firstDialog.show();
+    }
+
+    private void openDetailsActivity(NewConnectionDetails model){
+        Intent i = new Intent(getContext(), DetailsActivity.class);
+        i.putExtra("connectionNumber",model.getConnectionNumber());
+        i.putExtra("monthlyAmount",model.getMonthlyAmount());
+        i.putExtra("name",model.getName());
+        i.putExtra("mobileNumber",model.getMobileNumber());
+        i.putExtra("aatharNumber",model.getAadharNumber());
+        i.putExtra("cafNumber",model.getCafNumber());
+        i.putExtra("setUpBoxNumber",model.getSetUpBoxSerial());
+        i.putExtra("paidDate",model.getPaidDate());
+        startActivity(i);
     }
 
     /**
@@ -298,6 +326,30 @@ public class FragmentConnectionList extends Fragment {
             }
         });
 
+        //dailyList node
+        final String date = model.getDate().replace("/",",");
+
+        //dailyList Notification node
+        nodes.getNodeDailyList().child(date).child("notification").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                int pendingConnections = dataSnapshot.child("pendingConnections").getValue(Integer.class);
+
+                nodes.getNodeDailyList().child(date).child("notification").child("pendingConnections").setValue(pendingConnections-1);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        //adds value to paidList in dailyList connection node
+        NewConnectionDetails newConnectionDetails = new NewConnectionDetails(model.getDate(),model.getName(),model.getAreaName(),model.getMonthlyAmount(),model.getConnectionNumber(),model.getMobileNumber(),model.getAadharNumber(),model.getCafNumber(),model.getSetUpBoxSerial(),model.getPaidDate(),model.getPaid(),model.getMonthAndYear(),model.getIntDate());
+        nodes.getNodeDailyList().child(date).child("Connection List").child("paidList").child(model.getConnectionNumber()).setValue(newConnectionDetails);
+
+        //deletes node from pendingList
+        nodes.getNodeDailyList().child(date).child("Connection List").child("pending list").child(model.getConnectionNumber()).setValue(null);
     }
 
     /**
@@ -306,7 +358,7 @@ public class FragmentConnectionList extends Fragment {
      * @param model
      */
     public void shiftNode(NewConnectionDetails model){
-        NewConnectionDetails newConnectionDetails = new NewConnectionDetails(model.getDate(),model.getName(),model.getAreaName(),model.getMonthlyAmount(),model.getConnectionNumber(),model.getMobileNumber(),model.getAadharNumber(),model.getCafNumber(),model.getSetUpBoxSerial(),"Paid",model.getMonthAndYear(),model.getIntDate());
+        NewConnectionDetails newConnectionDetails = new NewConnectionDetails(model.getDate(),model.getName(),model.getAreaName(),model.getMonthlyAmount(),model.getConnectionNumber(),model.getMobileNumber(),model.getAadharNumber(),model.getCafNumber(),model.getSetUpBoxSerial(),dateSetter.ddmmyyyy(),"Paid",model.getMonthAndYear(),model.getIntDate());
         nodes.getNodePaidList().child(getAreaName()).child(dateSetter.monthAndYear()).child(model.getConnectionNumber()).setValue(newConnectionDetails);
 
         nodes.getNodePendingList()
@@ -317,7 +369,7 @@ public class FragmentConnectionList extends Fragment {
 
     /**
      * sets the value of paid node as Paid in connectionListPerMonth node
-     *
+     * sets the value of paid date to date in connectionListPerMonth node
      * @param model
      */
     public void setConnectionListPaid(NewConnectionDetails model) {
@@ -326,6 +378,11 @@ public class FragmentConnectionList extends Fragment {
                 .child(dateSetter.monthAndYear())
                 .child(model.getConnectionNumber())
                 .child("paid").setValue("Paid");
+        nodes.getNodeConnectionListPerMonth()
+                .child(getAreaName())
+                .child(dateSetter.monthAndYear())
+                .child(model.getConnectionNumber())
+                .child("paidDate").setValue(dateSetter.ddmmyyyy());
     }
 
     /**

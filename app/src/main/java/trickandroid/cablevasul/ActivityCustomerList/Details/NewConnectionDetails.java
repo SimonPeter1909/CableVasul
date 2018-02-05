@@ -6,13 +6,13 @@ package trickandroid.cablevasul.ActivityCustomerList.Details;
 
 public class NewConnectionDetails {
 
-    String date, name, areaName, monthlyAmount, connectionNumber, mobileNumber, aadharNumber, cafNumber, setUpBoxSerial, paid, monthAndYear;
+    String date, name, areaName, monthlyAmount, connectionNumber, mobileNumber, aadharNumber, cafNumber, setUpBoxSerial, paidDate, paid, monthAndYear;
     int intDate;
 
     public NewConnectionDetails() {
     }
 
-    public NewConnectionDetails(String date, String name, String areaName, String monthlyAmount, String connectionNumber, String mobileNumber, String aadharNumber, String cafNumber, String setUpBoxSerial, String paid, String monthAndYear, int intDate) {
+    public NewConnectionDetails(String date, String name, String areaName, String monthlyAmount, String connectionNumber, String mobileNumber, String aadharNumber, String cafNumber, String setUpBoxSerial, String paidDate, String paid, String monthAndYear, int intDate) {
         this.date = date;
         this.name = name;
         this.areaName = areaName;
@@ -22,6 +22,7 @@ public class NewConnectionDetails {
         this.aadharNumber = aadharNumber;
         this.cafNumber = cafNumber;
         this.setUpBoxSerial = setUpBoxSerial;
+        this.paidDate = paidDate;
         this.paid = paid;
         this.monthAndYear = monthAndYear;
         this.intDate = intDate;
@@ -99,6 +100,14 @@ public class NewConnectionDetails {
         this.setUpBoxSerial = setUpBoxSerial;
     }
 
+    public String getPaidDate() {
+        return paidDate;
+    }
+
+    public void setPaidDate(String paidDate) {
+        this.paidDate = paidDate;
+    }
+
     public String getPaid() {
         return paid;
     }
@@ -135,6 +144,7 @@ public class NewConnectionDetails {
                 ", aadharNumber='" + aadharNumber + '\'' +
                 ", cafNumber='" + cafNumber + '\'' +
                 ", setUpBoxSerial='" + setUpBoxSerial + '\'' +
+                ", paidDate='" + paidDate + '\'' +
                 ", paid='" + paid + '\'' +
                 ", monthAndYear='" + monthAndYear + '\'' +
                 ", intDate=" + intDate +

@@ -15,6 +15,7 @@ import com.firebase.ui.database.FirebaseRecyclerAdapter;
 import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import trickandroid.cablevasul.ActivityCustomerList.Details.NewConnectionDetails;
+import trickandroid.cablevasul.ActivityCustomerList.Functions.OnClickCallImage;
 import trickandroid.cablevasul.ActivityCustomerList.ViewHolder.ConnectionListViewHolder;
 import trickandroid.cablevasul.FirebasePackage.InitialiseFirebaseNodes;
 import trickandroid.cablevasul.R;
@@ -31,6 +32,7 @@ public class FragmentPendingList extends Fragment {
     private FirebaseRecyclerAdapter<NewConnectionDetails, ConnectionListViewHolder> adapter;
     private InitialiseFirebaseNodes nodes = new InitialiseFirebaseNodes();
     private DateSetter dateSetter = new DateSetter();
+    private OnClickCallImage onClickCallImage = new OnClickCallImage();
 
     public static FragmentPendingList newInstance(){
         return new FragmentPendingList();
@@ -75,6 +77,7 @@ public class FragmentPendingList extends Fragment {
                 holder.amountTV.setText(model.getMonthlyAmount());
                 holder.connectionDateTV.setText(model.getDate());
                 holder.paidTV.setText(model.getPaid());
+                onClickCallImage.onClickCallImg(holder,getContext(),getAreaName());
                 setTextColorofPaidTV(holder);
             }
 
