@@ -16,6 +16,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import trickandroid.cablevasul.ActivityCustomerList.Details.NewConnectionDetails;
 import trickandroid.cablevasul.ActivityCustomerList.Functions.OnClickCallImage;
+import trickandroid.cablevasul.ActivityCustomerList.Functions.OnHolderClick;
 import trickandroid.cablevasul.ActivityCustomerList.ViewHolder.ConnectionListViewHolder;
 import trickandroid.cablevasul.FirebasePackage.InitialiseFirebaseNodes;
 import trickandroid.cablevasul.R;
@@ -34,9 +35,15 @@ public class FragmentPaidList extends Fragment {
 
     private RecyclerView paidListRV;
     private FirebaseRecyclerAdapter<NewConnectionDetails, ConnectionListViewHolder> adapter;
+    //firebase
     private InitialiseFirebaseNodes nodes = new InitialiseFirebaseNodes();
+
+    //utils
     private DateSetter dateSetter = new DateSetter();
+
+    //functions
     private OnClickCallImage onClickCallImage = new OnClickCallImage();
+    private OnHolderClick onHolderClick = new OnHolderClick();
 
     @Nullable
     @Override
@@ -80,7 +87,8 @@ public class FragmentPaidList extends Fragment {
                 holder.connectionDateTV.setText(model.getDate());
                 holder.paidTV.setText(model.getPaid());
                 onClickCallImage.onClickCallImg(holder,getContext(),getAreaName());
-                setTextColorofPaidTV(holder);
+                onHolderClick.onHolderClick(holder,model,getContext(),getAreaName());
+                onHolderClick.setTextColorofPaidTV(holder,getContext());
             }
 
             @Override
@@ -94,18 +102,6 @@ public class FragmentPaidList extends Fragment {
         paidListRV.setHasFixedSize(true);
         paidListRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
         paidListRV.setAdapter(adapter);
-    }
-
-    /**
-     * sets the TextColor of the PaidTV
-     * @param holder
-     */
-    public void setTextColorofPaidTV(ConnectionListViewHolder holder){
-        if (holder.paidTV.getText().equals("Paid")){
-            holder.paidTV.setTextColor(getResources().getColor(R.color.Green));
-        } else {
-            holder.paidTV.setTextColor(getResources().getColor(R.color.Red));
-        }
     }
 
     /**

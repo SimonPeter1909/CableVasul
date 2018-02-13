@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="trickandroid.cablevasul.ActivityCustomerList.CustomerListActivity"
+    tools:context="trickandroid.cablevasul.ActivityCustomerList.Activities.CustomerListActivity"
     tools:showIn="@layout/activity_customer_list">
 
     <android.support.v4.view.ViewPager

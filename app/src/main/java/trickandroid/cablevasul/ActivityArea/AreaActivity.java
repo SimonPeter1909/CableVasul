@@ -31,6 +31,7 @@ import trickandroid.cablevasul.ActivityArea.Details.VasulDetails;
 import trickandroid.cablevasul.FirebasePackage.InitialiseFirebaseNodes;
 import trickandroid.cablevasul.FirebasePackage.InitializeFirebaseAuth;
 import trickandroid.cablevasul.R;
+import trickandroid.cablevasul.Utils.CheckFirebaseCharecters;
 import trickandroid.cablevasul.Utils.DateSetter;
 import trickandroid.cablevasul.Utils.SectionPagerAdapter;
 import trickandroid.cablevasul.Utils.ShowSnackBar;
@@ -56,6 +57,7 @@ public class AreaActivity extends AppCompatActivity {
     //utils
     private ShowSnackBar snackBar = new ShowSnackBar();
     private DateSetter dateSetter = new DateSetter();
+    private CheckFirebaseCharecters checkFirebaseCharecters = new CheckFirebaseCharecters();
 
     //progressBar
     private MaterialDialog progressBar;
@@ -130,6 +132,7 @@ public class AreaActivity extends AppCompatActivity {
     public void setToolbar(){
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setSubtitle(dateSetter.ddmmyyyyday());
+        toolbar.setNavigationIcon(R.drawable.ic_home);
         setSupportActionBar(toolbar);
     }
 
@@ -183,31 +186,32 @@ public class AreaActivity extends AppCompatActivity {
                             @Override
                             public void onInput(@NonNull MaterialDialog dialog, CharSequence input) {
                                 final String area = String.valueOf(input);
+                                if (!checkFirebaseCharecters.checkFirebaseCharecters(area)){
+                                    checkFirebaseCharecters.errorDialog(AreaActivity.this).show();
+                                } else {
+                                    nodes.getNodeAreaList().addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(DataSnapshot dataSnapshot) {
 
-                                nodes.getNodeAreaList().addListenerForSingleValueEvent(new ValueEventListener() {
-                                    @Override
-                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                            if (dataSnapshot.exists()) {
+                                                if (dataSnapshot.hasChild(area)) {
+                                                    snackBar.snackBar(view, "Area " + area + " Already Exists");
 
-                                        if (dataSnapshot.exists()) {
-                                            if (dataSnapshot.hasChild(area)) {
-                                                snackBar.snackBar(view, "Area " + area + " Already Exists");
-
-                                                Log.d(TAG, "onDataChange: Area " + area + " Already Exists");
+                                                    Log.d(TAG, "onDataChange: Area " + area + " Already Exists");
+                                                } else {
+                                                    addArea(area, view);
+                                                }
                                             } else {
                                                 addArea(area, view);
                                             }
-                                        } else {
-                                            addArea(area, view);
                                         }
-                                    }
 
-                                    @Override
-                                    public void onCancelled(DatabaseError databaseError) {
+                                        @Override
+                                        public void onCancelled(DatabaseError databaseError) {
 
-                                    }
-                                });
-
-
+                                        }
+                                    });
+                                }
                             }
                         })
                         .show();
@@ -370,6 +374,73 @@ public class AreaActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         auth.addAuthListener();
+        nodes.getNodeMonthDetails().child(dateSetter.monthAndYear()).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (!dataSnapshot.exists()){
+                    nodes.getNodeMonthDetails().child(dateSetter.preMonthAndYear()).child("PendingConnections").addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            final int pendingConnections = dataSnapshot.getValue(Integer.class);
+                            if (pendingConnections!=0){
+                                nodes.getNodeMonthDetails().child(dateSetter.preMonthAndYear()).child("totalConnections").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        int totalConnections = dataSnapshot.getValue(Integer.class);
+
+                                        nodes.getNodePendingConnections().child("PendingConnections").setValue(totalConnections+pendingConnections);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                                nodes.getNodeMonthDetails().child(dateSetter.preMonthAndYear()).child("amountCollected").addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(DataSnapshot dataSnapshot) {
+                                        final int amountCollected = dataSnapshot.getValue(Integer.class);
+
+                                        nodes.getNodeMonthDetails().child(dateSetter.preMonthAndYear()).child("totalAmount").addListenerForSingleValueEvent(new ValueEventListener() {
+                                            @Override
+                                            public void onDataChange(DataSnapshot dataSnapshot) {
+                                                int totalAmount = dataSnapshot.getValue(Integer.class);
+
+                                                nodes.getNodeTotalAmount().child("TotalAmount").setValue((totalAmount-amountCollected)+totalAmount);
+                                            }
+
+                                            @Override
+                                            public void onCancelled(DatabaseError databaseError) {
+
+                                            }
+                                        });
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(DatabaseError databaseError) {
+
+                                    }
+                                });
+
+                                nodes.getNodeAmountCollected().child("AmountCollected").setValue(0);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
     }
 
     @Override

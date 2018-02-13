@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="trickandroid.cablevasul.ActivityArea.AreaFragments.FragmentDailyList">
 
-    <com.applandeo.materialcalendarview.CalendarView
+    <com.prolificinteractive.materialcalendarview.MaterialCalendarView
         android:id="@+id/calenderView"
-        app:type="one_day_picker"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-
-    </com.applandeo.materialcalendarview.CalendarView>
+        android:layout_height="match_parent"/>
 
 </LinearLayout>

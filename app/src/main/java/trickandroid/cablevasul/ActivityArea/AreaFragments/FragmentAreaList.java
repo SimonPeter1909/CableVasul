@@ -16,7 +16,7 @@ import com.firebase.ui.database.FirebaseRecyclerOptions;
 
 import trickandroid.cablevasul.ActivityArea.Details.AreaDetails;
 import trickandroid.cablevasul.ActivityArea.ViewHolder.AreaViewHolder;
-import trickandroid.cablevasul.ActivityCustomerList.CustomerListActivity;
+import trickandroid.cablevasul.ActivityCustomerList.Activities.CustomerListActivity;
 import trickandroid.cablevasul.FirebasePackage.InitialiseFirebaseNodes;
 import trickandroid.cablevasul.R;
 

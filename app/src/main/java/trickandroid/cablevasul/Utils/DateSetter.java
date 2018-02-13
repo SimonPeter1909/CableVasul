@@ -30,6 +30,10 @@ public class DateSetter {
         return wordMonth(intmonth)+","+year();
     }
 
+    public String preMonthAndYear(){
+        return wordPreMonth()+","+year();
+    }
+
     public String wordMonth(int intMonth){
         String wordMonth = "";
         if (intmonth == 0){
@@ -56,6 +60,36 @@ public class DateSetter {
             wordMonth = "November";
         } else if (intmonth == 11){
             wordMonth = "December";
+        }
+        return wordMonth;
+    }
+
+    public String wordPreMonth(){
+        String wordMonth = "";
+        if (intmonth == 0){
+            wordMonth = "December";
+        } else if (intmonth == 1){
+            wordMonth = "January";
+        } else if (intmonth == 2){
+            wordMonth = "February";
+        } else if (intmonth == 3){
+            wordMonth = "March";
+        } else if (intmonth == 4){
+            wordMonth = "April";
+        } else if (intmonth == 5){
+            wordMonth = "May";
+        } else if (intmonth == 6){
+            wordMonth = "June";
+        } else if (intmonth == 7){
+            wordMonth = "July";
+        } else if (intmonth == 8){
+            wordMonth = "August";
+        } else if (intmonth == 9){
+            wordMonth = "September";
+        } else if (intmonth == 10){
+            wordMonth = "October";
+        } else if (intmonth == 11){
+            wordMonth = "November";
         }
         return wordMonth;
     }

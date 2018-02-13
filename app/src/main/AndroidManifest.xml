@@ -48,17 +48,35 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".ActivityCustomerList.CustomerListActivity"
+            android:name=".ActivityCustomerList.Activities.CustomerListActivity"
             android:label="@string/title_activity_customer_list"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name=".ActivityCustomerList.DetailsActivity"
+            android:name=".ActivityCustomerList.Activities.DetailsActivity"
             android:label="@string/title_activity_details"
-            android:parentActivityName=".ActivityCustomerList.CustomerListActivity"
+            android:parentActivityName=".ActivityCustomerList.Activities.CustomerListActivity"
             android:theme="@style/AppTheme.NoActionBar">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="trickandroid.cablevasul.ActivityCustomerList.CustomerListActivity" />
+                android:value="trickandroid.cablevasul.ActivityCustomerList.Activities.CustomerListActivity" />
+        </activity>
+        <activity
+            android:name=".ActivityCustomerList.Activities.NewConnectionActivity"
+            android:label="@string/title_activity_new_connection"
+            android:parentActivityName=".ActivityCustomerList.Activities.CustomerListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="trickandroid.cablevasul.ActivityCustomerList.Activities.CustomerListActivity" />
+        </activity>
+        <activity
+            android:name=".ActivityDailyList.DailyListActivity"
+            android:label="@string/title_activity_daily_list"
+            android:parentActivityName=".ActivityArea.AreaActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="trickandroid.cablevasul.ActivityArea.AreaActivity" />
         </activity>
     </application>
 

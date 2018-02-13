@@ -12,8 +12,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 
-import trickandroid.cablevasul.ActivityCustomerList.CustomerListActivity;
-import trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments.FragmentConnectionList;
 import trickandroid.cablevasul.ActivityCustomerList.ViewHolder.ConnectionListViewHolder;
 import trickandroid.cablevasul.FirebasePackage.InitialiseFirebaseNodes;
 import trickandroid.cablevasul.R;

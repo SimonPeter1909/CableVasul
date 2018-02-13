@@ -4,16 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="trickandroid.cablevasul.ActivityCustomerList.Activities.CustomerListActivity">
+    tools:context="trickandroid.cablevasul.ActivityDailyList.DailyListActivity">
 
     <android.support.design.widget.AppBarLayout
-        android:id="@+id/appBarLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/topToolbar"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbar"
+            android:id="@+id/toolbarDailyList"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             android:background="?attr/colorPrimary"
@@ -21,11 +21,21 @@
 
     </android.support.design.widget.AppBarLayout>
 
-    <android.support.design.widget.AppBarLayout
-        android:layout_below="@+id/bottomBarRL"
-        android:id="@+id/appBarLayoutTabs"
+    <RelativeLayout
+        android:layout_below="@+id/topToolbar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:id="@+id/cardViewRL">
+
+        <include layout="@layout/card_view_daily_list"/>
+
+    </RelativeLayout>
+
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/recylcerViewToolbar"
+        android:layout_below="@+id/cardViewRL"
         android:theme="@style/AppTheme.AppBarOverlay">
 
         <android.support.design.widget.TabLayout
@@ -39,23 +49,15 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/viewPagerLayout"
-        android:layout_below="@+id/appBarLayoutTabs">
+        android:layout_height="match_parent"
+        android:id="@+id/recylcerViewRL"
+        android:layout_below="@+id/recylcerViewToolbar"
+        android:layout_alignParentBottom="true">
 
-        <include layout="@layout/content_customer_list" />
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/bottomBarRL"
-        android:layout_width="match_parent"
-        android:background="@color/LightGreen"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/appBarLayout">
-
-        <include layout="@layout/layout_bottom_navigation"/>
+        <include layout="@layout/content_daily_list" />
 
     </RelativeLayout>
+
+
 
 </RelativeLayout>

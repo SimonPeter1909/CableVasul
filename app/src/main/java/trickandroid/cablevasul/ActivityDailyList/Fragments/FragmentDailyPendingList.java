@@ -1,4 +1,4 @@
-package trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments;
+package trickandroid.cablevasul.ActivityDailyList.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -23,16 +23,14 @@ import trickandroid.cablevasul.R;
 import trickandroid.cablevasul.Utils.DateSetter;
 
 /**
- * Created by Simon Peter on 06-Nov-17.
+ * Created by Simon on 2/12/2018.
  */
 
-public class FragmentConnectionList extends Fragment {
+public class FragmentDailyPendingList extends Fragment {
+    private static final String TAG = "FragmentDailyPendingLis";
 
-    private static final String TAG = "FragmentConnectionList";
-
-    private RecyclerView connectionListRV;
+    private RecyclerView pendingListRV;
     private FirebaseRecyclerAdapter<NewConnectionDetails, ConnectionListViewHolder> adapter;
-
     //firebase
     private InitialiseFirebaseNodes nodes = new InitialiseFirebaseNodes();
 
@@ -43,41 +41,50 @@ public class FragmentConnectionList extends Fragment {
     private OnClickCallImage onClickCallImage = new OnClickCallImage();
     private OnHolderClick onHolderClick = new OnHolderClick();
 
-    public static FragmentConnectionList newInstance() {
-        return new FragmentConnectionList();
+    public static FragmentDailyPendingList newInstance(){
+        return new FragmentDailyPendingList();
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View mainView = inflater.inflate(R.layout.fragment_connection_list, container, false);
 
-        initializeWidgets(mainView);
+        View view = inflater.inflate(R.layout.fragment_pending_list,container,false);
 
-        setAdapter(mainView);
+        initializeWidgets(view);
+        setAdapter(view);
 
-        return mainView;
+        return view;
+
     }
 
     /**
      * gets AreaName from the fragment bundle and returns as a String
-     *
      * @return
      */
-    public String getAreaName() {
+    public String getAreaName(){
         Bundle bundle = getArguments();
         Log.d(TAG, "getAreaName: = " + bundle.getString("areaName"));
         return bundle.getString("areaName");
     }
 
     /**
+     * gets AreaName from the fragment bundle and returns as a String
+     * @return
+     */
+    private String getDate(){
+        Bundle bundle = getArguments();
+        Log.d(TAG, "getDate: = " + bundle.getString("date"));
+        return bundle.getString("date");
+    }
+
+    /**
      * sets the value obtained from the firebase database and displays in the card View
-     *
      * @param view
      */
-    public void setAdapter(View view) {
+    public void setAdapter(View view){
         FirebaseRecyclerOptions<NewConnectionDetails> options = new FirebaseRecyclerOptions.Builder<NewConnectionDetails>()
-                .setQuery(nodes.getNodeConnectionListPerMonth().child(getAreaName()).child(dateSetter.monthAndYear()), NewConnectionDetails.class)
+                .setQuery(nodes.getNodeDailyList().child(getDate().replace("/",",")).child("Connection List").child(getAreaName()).child("pending list"),NewConnectionDetails.class)
                 .build();
 
         adapter = new FirebaseRecyclerAdapter<NewConnectionDetails, ConnectionListViewHolder>(options) {
@@ -95,24 +102,23 @@ public class FragmentConnectionList extends Fragment {
 
             @Override
             public ConnectionListViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-                View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_connection_list, parent, false);
+                View view1 = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_connection_list,parent,false);
 
                 return new ConnectionListViewHolder(view1);
             }
         };
 
-        connectionListRV.setHasFixedSize(true);
-        connectionListRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        connectionListRV.setAdapter(adapter);
+        pendingListRV.setHasFixedSize(true);
+        pendingListRV.setLayoutManager(new LinearLayoutManager(view.getContext()));
+        pendingListRV.setAdapter(adapter);
     }
 
     /**
      * initializing widgets of the Fragment
-     *
      * @param view
      */
-    public void initializeWidgets(View view) {
-        connectionListRV = view.findViewById(R.id.connectionListRV);
+    public void initializeWidgets(View view){
+        pendingListRV = view.findViewById(R.id.pendingListRV);
     }
 
     @Override
