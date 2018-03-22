@@ -247,13 +247,14 @@ public class LoginActivity extends AppCompatActivity {
      * @param password
      * @param view
      */
-    public void loginUser(String email, String password, final View view) {
+    public void loginUser(String email, final String password, final View view) {
         auth.mAuth().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         Log.d(TAG, "signInWithEmail:onComplete:" + task.isSuccessful());
                         if (task.isSuccessful()) {
+                            Log.d(TAG, "onComplete: password = " + password);
                             snackBar.snackBar(view, "Login Successfull");
                             rememberMe();
                             progressDialog.dismiss();

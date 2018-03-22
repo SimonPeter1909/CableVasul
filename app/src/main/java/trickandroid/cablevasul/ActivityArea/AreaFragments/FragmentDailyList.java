@@ -122,6 +122,8 @@ public class FragmentDailyList extends Fragment{
                                 setDatesSelected(dataSnapshot,materialCalendarView);
                             } else {
                                 setDatesSelected(dataSnapshot,materialCalendarView);
+                                progressBar.dismiss();
+                                Toast.makeText(getContext(),"No Connection on " + dateSlash,Toast.LENGTH_SHORT).show();
                             }
                         }
 

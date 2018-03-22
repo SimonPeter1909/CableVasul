@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:scrollbars="none"
+    android:padding="8dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:text="Area"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/areaTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:textSize="14sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center"
+                tools:text="Palaniyappa Colony" />
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="16sp"
+                android:text="Connection Date"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textSize="12sp"
+                android:text="(Click date to set Connection Date)"
+                android:layout_gravity="center"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_weight="1"
+            android:id="@+id/newConnectionDateTV"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_gravity="center"
+            tools:text="19/03/2018" />
+
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:text="Connection Number"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textSize="12sp"
+                    android:text="(Change Connection Number in Shift)"
+                    android:layout_gravity="center"
+                    android:gravity="center"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_weight="1"
+                android:id="@+id/newConnectionNumberTV"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_gravity="center"
+                tools:text="A45" />
+
+        </LinearLayout>
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/monthlyAmountET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:ems="10"
+            android:hint="Monthly Amount"
+            android:inputType="number"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="3"
+            app:met_minCharacters="3" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/nameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:ems="10"
+            android:hint="Name"
+            android:inputType="textCapWords"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="20"
+            app:met_minCharacters="1" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/mobileNumberET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:ems="10"
+            android:hint="Mobile Number"
+            android:inputType="phone"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="10"
+            app:met_minCharacters="10" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/aadharNumberET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:ems="10"
+            android:hint="Aathar Number"
+            android:inputType="number"
+            android:singleLine="true"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="12"
+            app:met_minCharacters="12" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/cafET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:ems="10"
+            android:hint="CAF No"
+            android:inputType="number"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="7"
+            app:met_minCharacters="7" />
+
+        <com.rengwuxian.materialedittext.MaterialEditText
+            android:id="@+id/setUpSerialET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="4dp"
+            android:ems="10"
+            android:hint="Set-Up Box Serial"
+            android:inputType="textCapCharacters"
+            app:met_floatingLabel="highlight"
+            app:met_maxCharacters="8"
+            app:met_minCharacters="8" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/cancelBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Cancel" />
+
+            <Button
+                android:gravity="center"
+                android:layout_weight="1"
+                android:id="@+id/addBTN"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Add" />
+
+            <CheckBox
+                android:id="@+id/paidCheckBox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="4dp"
+                android:text="Paid"
+                android:textSize="18sp"
+                android:layout_weight="1"
+                android:gravity="center"/>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+</ScrollView>

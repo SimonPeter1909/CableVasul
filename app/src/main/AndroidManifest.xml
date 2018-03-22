@@ -78,6 +78,15 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="trickandroid.cablevasul.ActivityArea.AreaActivity" />
         </activity>
+        <activity
+            android:name=".ActivityCustomerList.Activities.EditConnectionActivity"
+            android:label="@string/title_activity_edit_connection"
+            android:parentActivityName=".ActivityCustomerList.Activities.CustomerListActivity"
+            android:theme="@style/AppTheme.NoActionBar">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="trickandroid.cablevasul.ActivityCustomerList.Activities.CustomerListActivity" />
+        </activity>
     </application>
 
 </manifest>

@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 27
-    buildToolsVersion "26.0.2"
+    buildToolsVersion "27.0.3"
     defaultConfig {
         applicationId "trickandroid.cablevasul"
         minSdkVersion 19
@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true
     }
     buildTypes {
         release {
@@ -24,23 +25,23 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:27.0.2'
-    compile 'com.android.support:design:27.0.2'
-    compile 'com.android.support:cardview-v7:27.0.2'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'com.google.firebase:firebase-auth:11.8.0'
-    compile 'com.google.firebase:firebase-database:11.8.0'
-    compile 'com.google.firebase:firebase-core:11.8.0'
-    compile 'com.firebaseui:firebase-ui-database:3.1.0'
-    compile 'com.github.medyo:fancybuttons:1.8.4'
-    compile 'com.afollestad.material-dialogs:core:0.9.6.0'
-    compile 'com.afollestad.material-dialogs:commons:0.9.6.0'
-    compile 'com.github.thomper:sweet-alert-dialog:v1.4.0'
-    compile 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
-    compile 'com.rengwuxian.materialedittext:library:2.1.4'
-    compile 'com.prolificinteractive:material-calendarview:1.4.3'
-    compile 'com.android.volley:volley:1.0.0'
-    compile 'org.jsoup:jsoup:1.11.2'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support:cardview-v7:27.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'com.google.firebase:firebase-auth:11.8.0'
+    implementation 'com.google.firebase:firebase-database:11.8.0'
+    implementation 'com.google.firebase:firebase-core:11.8.0'
+    implementation 'com.firebaseui:firebase-ui-database:3.2.2'
+    implementation 'com.github.medyo:fancybuttons:1.8.4'
+    implementation 'com.afollestad.material-dialogs:core:0.9.6.0'
+    implementation 'com.afollestad.material-dialogs:commons:0.9.6.0'
+    implementation 'com.github.thomper:sweet-alert-dialog:v1.4.0'
+    implementation 'com.github.ittianyu:BottomNavigationViewEx:1.2.4'
+    implementation 'com.rengwuxian.materialedittext:library:2.1.4'
+    implementation 'com.prolificinteractive:material-calendarview:1.4.3'
+    implementation 'com.android.volley:volley:1.1.0'
+    implementation 'org.jsoup:jsoup:1.11.2'
     testCompile 'junit:junit:4.12'
 }
 

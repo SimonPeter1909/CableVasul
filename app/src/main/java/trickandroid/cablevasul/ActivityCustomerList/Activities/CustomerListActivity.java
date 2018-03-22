@@ -1,7 +1,6 @@
 package trickandroid.cablevasul.ActivityCustomerList.Activities;
 
 
-import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -13,12 +12,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.DatePicker;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -27,16 +20,10 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 import com.ittianyu.bottomnavigationviewex.BottomNavigationViewEx;
-import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
-import com.rengwuxian.materialedittext.MaterialEditText;
 
-import java.util.Date;
-
-import trickandroid.cablevasul.ActivityArea.Details.AreaDetails;
 import trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments.FragmentConnectionList;
 import trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments.FragmentPaidList;
 import trickandroid.cablevasul.ActivityCustomerList.CustomerListFragments.FragmentPendingList;
-import trickandroid.cablevasul.ActivityCustomerList.Details.NewConnectionDetails;
 import trickandroid.cablevasul.FirebasePackage.InitialiseFirebaseNodes;
 import trickandroid.cablevasul.FirebasePackage.InitializeFirebaseAuth;
 import trickandroid.cablevasul.R;
@@ -164,9 +151,15 @@ public class CustomerListActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.ic_add:
-                        Intent i = new Intent(CustomerListActivity.this, NewConnectionActivity.class);
-                        i.putExtra("areaName", getAreaName());
-                        startActivity(i);
+                        Intent newIntent = new Intent(CustomerListActivity.this, NewConnectionActivity.class);
+                        newIntent.putExtra("areaName", getAreaName());
+                        startActivity(newIntent);
+                        break;
+
+                    case R.id.ic_edit:
+                        Intent editIntent = new Intent(CustomerListActivity.this, EditConnectionActivity.class);
+                        editIntent.putExtra("areaName",getAreaName());
+                        startActivity(editIntent);
                         break;
                 }
                 return false;

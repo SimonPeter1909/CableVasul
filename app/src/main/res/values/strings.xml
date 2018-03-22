@@ -13,4 +13,5 @@
     <string name="title_activity_details">DetailsActivity</string>
     <string name="title_activity_new_connection">NewConnectionActivity</string>
     <string name="title_activity_daily_list">DailyListActivity</string>
+    <string name="title_activity_edit_connection">EditConnectionActivity</string>
 </resources>
